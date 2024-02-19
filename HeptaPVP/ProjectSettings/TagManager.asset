@@ -1,0 +1,58 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - Enemy
+  - Wall
+  - PlayerBarrier
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - Pj
+  - Water
+  - UI
+  - Wall
+  - PlayerWall
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: Ground
+    uniqueID: 3868161659
+    locked: 0
+  - name: Layout
+    uniqueID: 1431720065
+    locked: 0
+  - name: Effects
+    uniqueID: 383249149
+    locked: 0
+  - name: Pj
+    uniqueID: 2261369803
+    locked: 0
