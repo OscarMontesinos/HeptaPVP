@@ -31,6 +31,26 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+            foreach (PjBase unit in GameManager.Instance.pjList)
+            {
+                if (unit != null)
+                {
+                    
+                    if (unit.team != character.team)
+                    {
+                        var dir = unit.transform.position - transform.position;
+                        if (!Physics2D.Raycast(transform.position, dir, dir.magnitude, wallLayer))
+                        {
+                            unit.hide = false;
+                        }
+                        else
+                        {
+                            unit.hide = true;
+                        }
+                    }
+                }
+            }
+
         if(cam != Camera.main)
         {
             cam = Camera.main;
@@ -94,15 +114,15 @@ public class PlayerController : MonoBehaviour
         {
             if (!character.dashing)
             {
-                if (!character.casting && character.stunTime <= 0)
+                if (character.stunTime <= 0)
                 {
-                    if (!character.softCasting || character.ignoreSoftCastDebuff)
+                    if (!character.casting || character.ignoreSoftCastDebuff)
                     {
-                        rb.velocity = transform.right * character.stats.spd * inputMov.x + transform.up * character.stats.spd * inputMov.y;
+                        rb.velocity = (transform.right * inputMov.x + transform.up * inputMov.y) * character.stats.spd;
                     }
                     else
                     {
-                        rb.velocity = transform.right * (character.stats.spd / 1.5f) * inputMov.x + transform.up * (character.stats.spd / 1.5f) * inputMov.y;
+                        rb.velocity = (transform.right * inputMov.x + transform.up * inputMov.y) * (character.stats.spd / 1.5f);
                     }
                 }
                 else
@@ -134,23 +154,23 @@ public class PlayerController : MonoBehaviour
     }
     void HandleCamera()
     {
-        cam.transform.position = new Vector3(transform.position.x, transform.position.y, cam.transform.position.z);
-        if (targetBoss == null)
-        {
-            Camera.main.orthographicSize = maxViewportDistance;
-        }
-        else
-        {
-            Vector3 dist = targetBoss.transform.position - character.transform.position;
-            dist = character.transform.position + (dist * 0.5f);
-            cam.transform.position = new Vector3(dist.x, dist.y , cam.transform.position.z);
+        /* cam.transform.position = new Vector3(transform.position.x, transform.position.y, cam.transform.position.z);
+         if (targetBoss == null)
+         {
+             Camera.main.orthographicSize = maxViewportDistance;
+         }
+         else
+         {
+             Vector3 dist = targetBoss.transform.position - character.transform.position;
+             dist = character.transform.position + (dist * 0.5f);
+             cam.transform.position = new Vector3(dist.x, dist.y , cam.transform.position.z);
 
-            dist = targetBoss.transform.position - character.transform.position;
-            if (dist.magnitude > maxViewportDistance)
-            {
-                Camera.main.orthographicSize = dist.magnitude;
-            }
-        }
+             dist = targetBoss.transform.position - character.transform.position;
+             if (dist.magnitude > maxViewportDistance)
+             {
+                 Camera.main.orthographicSize = dist.magnitude;
+             }
+         }*/
     }
 
     void HandleHabilities()
@@ -163,11 +183,11 @@ public class PlayerController : MonoBehaviour
         {
             character.Hab1();
         }
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.Q))
         {
             character.Hab2();
         }
-        if (Input.GetKeyDown(KeyCode.Q))
+        if (Input.GetKeyDown(KeyCode.E))
         {
             character.Hab3();
         }

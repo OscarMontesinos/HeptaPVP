@@ -13,6 +13,7 @@ public class CameraController : MonoBehaviour
     bool moveAlone;
     public float speedZoom;
     public Camera cam;
+    bool rotateCamera;
     // Start is called before the first frame update
     void Awake()
     {
@@ -20,7 +21,7 @@ public class CameraController : MonoBehaviour
 
     private void Start()
     {
-        zPos = transform.position.z;
+        zPos = cam.transform.position.z;
         if (playerController != null)
         {
             playerController.cam = transform.GetChild(0).GetComponent<Camera>();
@@ -35,22 +36,36 @@ public class CameraController : MonoBehaviour
             moveAlone = true;
             cam = FindObjectOfType<Camera>();
         }
-        
-        if (Input.GetKey(KeyCode.Space))
+        else
         {
-            transform.rotation = Quaternion.Slerp(transform.rotation, playerController.transform.GetChild(0).rotation, rSpeed * Time.deltaTime);
+            transform.position = new Vector3(playerController.transform.position.x, playerController.transform.position.y, playerController.transform.position.z);
+        }
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            rotateCamera = !rotateCamera;
+        }
+       
+        if (rotateCamera)
+        {
+            transform.rotation = Quaternion.Slerp(transform.rotation, playerController.character.spinObjects.transform.rotation, rSpeed * Time.deltaTime);
             if (camPos < camDistance)
             {
-                transform.GetChild(0).Translate(transform.up * Time.deltaTime * speed*3);
-                camPos += Time.deltaTime * speed*3;
+                transform.GetChild(0).Translate(transform.up * Time.deltaTime * speed * 3);
+                camPos += Time.deltaTime * speed * 3;
             }
         }
         else
         {
-            if (camPos > 0)
+            if (camPos > 0.1f)
             {
-                transform.GetChild(0).Translate(transform.up * Time.deltaTime * -speed*3);
-                camPos += Time.deltaTime * -speed*3;
+                transform.GetChild(0).Translate(transform.up * Time.deltaTime * -speed * 3);
+                camPos += Time.deltaTime * -speed * 3;
+            }
+            else if (camPos <= 0.1f)
+            {
+                transform.rotation = Quaternion.Slerp(transform.rotation, playerController.character.spinObjects.transform.rotation, rSpeed * 10 * Time.deltaTime);
+                transform.GetChild(0).transform.localPosition = new Vector3(0,0,zPos);
+                camPos = 0;
             }
         }
         transform.GetChild(0).eulerAngles = new Vector3(0, 0, 0);

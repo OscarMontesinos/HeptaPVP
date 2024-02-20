@@ -24,7 +24,7 @@ public class UIManager : MonoBehaviour
 
     private void Start()
     {
-
+        UpdateHabIndicatorsImages();
     }
     private void Update()
     {
@@ -68,6 +68,8 @@ public class UIManager : MonoBehaviour
         {
             shieldText.text = "";
         }
+
+        stunSlider.value = ch.stunTime;
     }
 
 
@@ -83,9 +85,9 @@ public class UIManager : MonoBehaviour
     {
         if (ch != null && ch.stats.hp > 0)
         {
-            habIndicators[0].UIUpdate(ch.hab1Cd, ch.currentHab1Cd, ch.isActive);
-            habIndicators[1].UIUpdate(ch.hab2Cd, ch.currentHab2Cd, ch.isActive);
-            habIndicators[2].UIUpdate(ch.hab3Cd, ch.currentHab3Cd, ch.isActive);
+            habIndicators[0].UIUpdate(ch.hab1Cd, ch.currentHab1Cd);
+            habIndicators[1].UIUpdate(ch.hab2Cd, ch.currentHab2Cd);
+            habIndicators[2].UIUpdate(ch.hab3Cd, ch.currentHab3Cd);
         }
     }
 

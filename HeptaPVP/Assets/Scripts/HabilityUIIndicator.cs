@@ -7,12 +7,11 @@ using UnityEngine.UI;
 public class HabilityUIIndicator : MonoBehaviour
 {
     public Slider slider;
-    public GameObject marker;
     public TextMeshProUGUI text;
     public GameObject content;
     public Image image;
 
-    public void UIUpdate(float maxCD, float cd, bool active)
+    public void UIUpdate(float maxCD, float cd)
     {
         slider.maxValue = maxCD;
         slider.value = cd;
@@ -24,7 +23,6 @@ public class HabilityUIIndicator : MonoBehaviour
         {
             text.text = "";
         }
-        marker.SetActive(!active);
     }
 
     public void UpdateImage(Sprite image)

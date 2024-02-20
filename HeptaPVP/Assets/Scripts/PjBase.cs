@@ -26,8 +26,6 @@ public class PjBase : MonoBehaviour, TakeDamage
     public Sprite hab2Image;
     public Sprite hab3Image;
     [HideInInspector]
-    public bool isActive;
-    [HideInInspector]
     public float currentComboReset;
     [HideInInspector]
     public float currentHab1Cd;
@@ -52,7 +50,8 @@ public class PjBase : MonoBehaviour, TakeDamage
     public float damageTextOffset;
     [HideInInspector]
     public float dmgDealed;
-
+    public bool hide;
+    public GameObject visuals;
     float healCount;
     public enum AttackType
     {
@@ -61,7 +60,7 @@ public class PjBase : MonoBehaviour, TakeDamage
 
     public virtual void Awake()
     {
-        controller =GetComponent<PlayerController>();
+        controller = GetComponent<PlayerController>();
     }
     public virtual void Start()
     {
@@ -72,11 +71,20 @@ public class PjBase : MonoBehaviour, TakeDamage
     }
     public virtual void Update()
     {
-        if (isActive)
+        if (hide)
         {
-            if (stunTime > 0)
+            visuals.SetActive(false);
+        }
+        else
+        {
+            visuals.SetActive(true);
+        }
+
+        if (stunTime > 0)
+        {
+            stunTime -= Time.deltaTime;
+            if (stunnBar != null)
             {
-                stunTime -= Time.deltaTime;
                 if (stunnBar.maxValue < stunTime)
                 {
                     stunnBar.maxValue = stunTime;
@@ -84,7 +92,10 @@ public class PjBase : MonoBehaviour, TakeDamage
 
                 stunnBar.value = stunTime;
             }
-            else
+        }
+        else
+        {
+            if (stunnBar != null)
             {
                 stunnBar.maxValue = 0.3f;
                 stunnBar.value = 0;
@@ -96,21 +107,11 @@ public class PjBase : MonoBehaviour, TakeDamage
             currentComboReset -= Time.deltaTime;
         }
 
-        if (currentHab1Cd > 0)
-        {
-            currentHab1Cd -= Time.deltaTime;
-        }
+        RechargeHab1();
 
-        if (currentHab2Cd > 0)
-        {
-            currentHab2Cd -= Time.deltaTime;
-        }
+        RechargeHab2();
 
-        if (currentHab3Cd > 0)
-        {
-            currentHab3Cd -= Time.deltaTime;
-        }
-
+        RechargeHab3();
 
         if (spinObjects != null)
         {
@@ -119,12 +120,28 @@ public class PjBase : MonoBehaviour, TakeDamage
 
     }
 
-    public virtual void Activate(bool active)
+    public virtual void RechargeHab1()
     {
-        GetComponent<Collider2D>().enabled = active;
-        isActive = active;
-        sprite.SetActive(active);
+        if (currentHab1Cd > 0)
+        {
+            currentHab1Cd -= Time.deltaTime;
+        }
     }
+    public virtual void RechargeHab2()
+    {
+        if (currentHab2Cd > 0)
+        {
+            currentHab2Cd -= Time.deltaTime;
+        }
+    }
+    public virtual void RechargeHab3()
+    {
+        if (currentHab3Cd > 0)
+        {
+            currentHab3Cd -= Time.deltaTime;
+        }
+    }
+
     public virtual void MainAttack()
     {
         
@@ -182,7 +199,18 @@ public class PjBase : MonoBehaviour, TakeDamage
 
     public bool IsCasting()
     {
-        if(!casting && !softCasting)
+        if(!casting)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+    public bool IsSoftCasting()
+    {
+        if(!softCasting)
         {
             return false;
         }
@@ -195,6 +223,17 @@ public class PjBase : MonoBehaviour, TakeDamage
     public bool IsStunned()
     {
         if (stunTime > 0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    public bool IsDashing()
+    {
+        if (dashing)
         {
             return true;
         }
@@ -228,103 +267,100 @@ public class PjBase : MonoBehaviour, TakeDamage
         TakeDmg(user, value, element, type);
     }
 
-    public virtual void TakeDmg(PjBase user,float value, HitData.Element element, AttackType type)
+    public virtual void TakeDmg(PjBase user, float value, HitData.Element element, AttackType type)
     {
-        if (isActive)
+        float calculo = 0;
+        DamageText dText = null;
+        switch (element)
         {
-            float calculo = 0;
-            DamageText dText = null;
-            switch (element)
-            {
-                case HitData.Element.ice:
-                    dText = Instantiate(GameManager.Instance.damageText, transform.position + new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(damageTextOffset - 0.5f, damageTextOffset + 0.5f), 0), transform.rotation).GetComponent<DamageText>();
-                    dText.textColor = GameManager.Instance.iceColor;
-                    break;
-                case HitData.Element.fire:
-                    dText = Instantiate(GameManager.Instance.damageText, transform.position + new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(damageTextOffset - 0.5f, damageTextOffset + 0.5f), 0), transform.rotation).GetComponent<DamageText>();
-                    dText.textColor = GameManager.Instance.fireColor;
-                    break;
-                case HitData.Element.water:
-                    dText = Instantiate(GameManager.Instance.damageText, transform.position + new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(damageTextOffset - 0.5f, damageTextOffset + 0.5f), 0), transform.rotation).GetComponent<DamageText>();
-                    dText.textColor = GameManager.Instance.waterColor;
-                    break;
-                case HitData.Element.blood:
-                    dText = Instantiate(GameManager.Instance.damageText, transform.position + new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(damageTextOffset - 0.5f, damageTextOffset + 0.5f), 0), transform.rotation).GetComponent<DamageText>();
-                    dText.textColor = GameManager.Instance.bloodColor;
-                    break;
-                case HitData.Element.desert:
-                    dText = Instantiate(GameManager.Instance.damageText, transform.position + new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(damageTextOffset - 0.5f, damageTextOffset + 0.5f), 0), transform.rotation).GetComponent<DamageText>();
-                    dText.textColor = GameManager.Instance.desertColor;
-                    break;
-                case HitData.Element.wind:
-                    dText = Instantiate(GameManager.Instance.damageText, transform.position + new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(damageTextOffset - 0.5f, damageTextOffset + 0.5f), 0), transform.rotation).GetComponent<DamageText>();
-                    dText.textColor = GameManager.Instance.windColor;
-                    break;
-                case HitData.Element.nature:
-                    dText = Instantiate(GameManager.Instance.damageText, transform.position + new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(damageTextOffset - 0.5f, damageTextOffset + 0.5f), 0), transform.rotation).GetComponent<DamageText>();
-                    dText.textColor = GameManager.Instance.natureColor;
-                    break;
-                case HitData.Element.lightning:
-                    dText = Instantiate(GameManager.Instance.damageText, transform.position + new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(damageTextOffset - 0.5f, damageTextOffset + 0.5f), 0), transform.rotation).GetComponent<DamageText>();
-                    dText.textColor = GameManager.Instance.lightningColor;
-                    break;
-            }
+            case HitData.Element.ice:
+                dText = Instantiate(GameManager.Instance.damageText, transform.position + new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(damageTextOffset - 0.5f, damageTextOffset + 0.5f), 0), transform.rotation).GetComponent<DamageText>();
+                dText.textColor = GameManager.Instance.iceColor;
+                break;
+            case HitData.Element.fire:
+                dText = Instantiate(GameManager.Instance.damageText, transform.position + new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(damageTextOffset - 0.5f, damageTextOffset + 0.5f), 0), transform.rotation).GetComponent<DamageText>();
+                dText.textColor = GameManager.Instance.fireColor;
+                break;
+            case HitData.Element.water:
+                dText = Instantiate(GameManager.Instance.damageText, transform.position + new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(damageTextOffset - 0.5f, damageTextOffset + 0.5f), 0), transform.rotation).GetComponent<DamageText>();
+                dText.textColor = GameManager.Instance.waterColor;
+                break;
+            case HitData.Element.blood:
+                dText = Instantiate(GameManager.Instance.damageText, transform.position + new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(damageTextOffset - 0.5f, damageTextOffset + 0.5f), 0), transform.rotation).GetComponent<DamageText>();
+                dText.textColor = GameManager.Instance.bloodColor;
+                break;
+            case HitData.Element.desert:
+                dText = Instantiate(GameManager.Instance.damageText, transform.position + new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(damageTextOffset - 0.5f, damageTextOffset + 0.5f), 0), transform.rotation).GetComponent<DamageText>();
+                dText.textColor = GameManager.Instance.desertColor;
+                break;
+            case HitData.Element.wind:
+                dText = Instantiate(GameManager.Instance.damageText, transform.position + new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(damageTextOffset - 0.5f, damageTextOffset + 0.5f), 0), transform.rotation).GetComponent<DamageText>();
+                dText.textColor = GameManager.Instance.windColor;
+                break;
+            case HitData.Element.nature:
+                dText = Instantiate(GameManager.Instance.damageText, transform.position + new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(damageTextOffset - 0.5f, damageTextOffset + 0.5f), 0), transform.rotation).GetComponent<DamageText>();
+                dText.textColor = GameManager.Instance.natureColor;
+                break;
+            case HitData.Element.lightning:
+                dText = Instantiate(GameManager.Instance.damageText, transform.position + new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(damageTextOffset - 0.5f, damageTextOffset + 0.5f), 0), transform.rotation).GetComponent<DamageText>();
+                dText.textColor = GameManager.Instance.lightningColor;
+                break;
+        }
 
-            if (type == AttackType.Magical)
-            {
-                calculo = stats.mResist + stats.resist;
-            }
-            else
-            {
-                calculo = stats.fResist + stats.resist;
-            }
+        if (type == AttackType.Magical)
+        {
+            calculo = stats.mResist + stats.resist;
+        }
+        else
+        {
+            calculo = stats.fResist + stats.resist;
+        }
 
-            if (calculo < 0)
+        if (calculo < 0)
+        {
+            calculo = 0;
+        }
+        value -= ((value * ((calculo / (100 + calculo) * 100))) / 100);
+        float originalValue = value;
+        if (controller != null)
+        {
+            while (Shield.shieldAmount > 0 && value > 0)
             {
-                calculo = 0;
-            }
-            value -= ((value * ((calculo / (100 + calculo) * 100))) / 100);
-            float originalValue = value;
-            if (controller != null)
-            {
-                while (Shield.shieldAmount > 0 && value > 0)
+                Shield chosenShield = null;
+                foreach (Shield shield in controller.GetComponents<Shield>())
                 {
-                    Shield chosenShield = null;
-                    foreach (Shield shield in controller.GetComponents<Shield>())
+                    if (chosenShield == null || shield.time < chosenShield.time && shield.singularShieldAmount > 0)
                     {
-                        if (chosenShield == null || shield.time < chosenShield.time && shield.singularShieldAmount > 0)
-                        {
-                            chosenShield = shield;
-                        }
+                        chosenShield = shield;
                     }
-                    value = chosenShield.ChangeShieldAmount(-value);
-
                 }
+                value = chosenShield.ChangeShieldAmount(-value);
 
-                /*if(value != originalValue)
-                {
-                    originalValue -= value;
-                    DamageText sText = Instantiate(GameManager.Instance.damageText, transform.position + new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(damageTextOffset - 0.5f, damageTextOffset + 0.5f), 0), transform.rotation).GetComponent<DamageText>();
-                    sText.textColor = Color.white;
-                    sText.damageText.text = originalValue.ToString("F0");
-                }*/
             }
 
-
-            dText.damageText.text = value.ToString("F0");
-
-            stats.hp -= value;
-            user.RegisterDamage(value);
-            if (stats.hp <= 0)
+            /*if(value != originalValue)
             {
-                GetComponent<TakeDamage>().Die();
-            }
-            if (hpBar != null)
-            {
-                hpBar.maxValue = stats.mHp;
-                hpBar.value = stats.hp;
-                hpText.text = stats.hp.ToString("F0");
-            }
+                originalValue -= value;
+                DamageText sText = Instantiate(GameManager.Instance.damageText, transform.position + new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(damageTextOffset - 0.5f, damageTextOffset + 0.5f), 0), transform.rotation).GetComponent<DamageText>();
+                sText.textColor = Color.white;
+                sText.damageText.text = originalValue.ToString("F0");
+            }*/
+        }
+
+
+        dText.damageText.text = value.ToString("F0");
+
+        stats.hp -= value;
+        user.RegisterDamage(value);
+        if (stats.hp <= 0)
+        {
+            GetComponent<TakeDamage>().Die();
+        }
+        if (hpBar != null)
+        {
+            hpBar.maxValue = stats.mHp;
+            hpBar.value = stats.hp;
+            hpText.text = stats.hp.ToString("F0");
         }
     }
 
@@ -453,17 +489,13 @@ public class PjBase : MonoBehaviour, TakeDamage
         return value;
     }
 
-    public virtual IEnumerator Dash(Vector2 direction, float speed, float range, bool isBasicDash)
+    public virtual IEnumerator Dash(Vector2 direction, float speed, float range)
     {
         yield return null;
-        StartCoroutine(Dash(direction, speed, range, isBasicDash, false, true));
+        StartCoroutine(Dash(direction, speed, range, false, false));
     }
-    public virtual IEnumerator Dash(Vector2 direction, float speed, float range, bool isBasicDash, bool ignoreWalls, bool shutDownCollider)
+    public virtual IEnumerator Dash(Vector2 direction, float speed, float range, bool ignoreWalls, bool shutDownCollider)
     {
-        if (isBasicDash)
-        {
-            speed += stats.spd;
-        }
         if (!shutDownCollider)
         {
             GetComponent<Collider2D>().isTrigger = true;
@@ -503,12 +535,8 @@ public class PjBase : MonoBehaviour, TakeDamage
         }
     }
 
-    public virtual IEnumerator Dash(Vector2 direction, float speed, float range, bool isBasicDash, bool ignoreWalls)
+    public virtual IEnumerator Dash(Vector2 direction, float speed, float range, bool ignoreWalls)
     {
-        if (isBasicDash)
-        {
-            speed += stats.spd;
-        }
         GetComponent<Collider2D>().enabled = false;
         dashing = true;
 
