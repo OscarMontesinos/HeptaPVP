@@ -14,6 +14,7 @@ public class CameraController : MonoBehaviour
     public float speedZoom;
     public Camera cam;
     bool rotateCamera;
+    bool beginExpectate;
     // Start is called before the first frame update
     void Awake()
     {
@@ -40,51 +41,31 @@ public class CameraController : MonoBehaviour
         {
             transform.position = new Vector3(playerController.transform.position.x, playerController.transform.position.y, playerController.transform.position.z);
         }
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            rotateCamera = !rotateCamera;
-        }
-       
-        if (rotateCamera)
-        {
-            transform.rotation = Quaternion.Slerp(transform.rotation, playerController.character.spinObjects.transform.rotation, rSpeed * Time.deltaTime);
-            if (camPos < camDistance)
-            {
-                transform.GetChild(0).Translate(transform.up * Time.deltaTime * speed * 3);
-                camPos += Time.deltaTime * speed * 3;
-            }
-        }
-        else
-        {
-            if (camPos > 0.1f)
-            {
-                transform.GetChild(0).Translate(transform.up * Time.deltaTime * -speed * 3);
-                camPos += Time.deltaTime * -speed * 3;
-            }
-            else if (camPos <= 0.1f)
-            {
-                transform.rotation = Quaternion.Slerp(transform.rotation, playerController.character.spinObjects.transform.rotation, rSpeed * 10 * Time.deltaTime);
-                transform.GetChild(0).transform.localPosition = new Vector3(0,0,zPos);
-                camPos = 0;
-            }
-        }
-        transform.GetChild(0).eulerAngles = new Vector3(0, 0, 0);
+
         if (moveAlone)
         {
+            if (!beginExpectate)
+            {
+                foreach(PjBase unit in GameManager.Instance.pjList)
+                {
+                    unit.hide = false;
+                }
+            }
+
             if (Input.GetAxis("Mouse ScrollWheel") < 0f)
             {
                 cam.orthographicSize += speedZoom;
-                if (cam.orthographicSize > 25)
+                if (cam.orthographicSize > 45)
                 {
-                    cam.orthographicSize = 25;
+                    cam.orthographicSize = 45;
                 }
             }
             if (Input.GetAxis("Mouse ScrollWheel") > 0f)
             {
                 cam.orthographicSize -= speedZoom;
-                if (cam.orthographicSize < 1)
+                if (cam.orthographicSize < 10)
                 {
-                    cam.orthographicSize = 2;
+                    cam.orthographicSize = 10;
                 }
 
             }
@@ -104,6 +85,48 @@ public class CameraController : MonoBehaviour
             {
                 cam.transform.position = new Vector3(cam.transform.position.x - speed * Time.deltaTime, cam.transform.position.y, cam.transform.position.z);
             }
+
+            if (Input.GetKeyDown(KeyCode.LeftShift))
+            {
+                speed *= 2;
+            }
+            if (Input.GetKeyUp(KeyCode.LeftShift))
+            {
+                speed /= 2;
+            }
+        }
+        else
+        {
+
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                rotateCamera = !rotateCamera;
+            }
+
+            if (rotateCamera)
+            {
+                transform.rotation = Quaternion.Slerp(transform.rotation, playerController.character.spinObjects.transform.rotation, rSpeed * Time.deltaTime);
+                if (camPos < camDistance)
+                {
+                    transform.GetChild(0).Translate(transform.up * Time.deltaTime * speed * 3);
+                    camPos += Time.deltaTime * speed * 3;
+                }
+            }
+            else
+            {
+                if (camPos > 0.1f)
+                {
+                    transform.GetChild(0).Translate(transform.up * Time.deltaTime * -speed * 3);
+                    camPos += Time.deltaTime * -speed * 3;
+                }
+                else if (camPos <= 0.1f)
+                {
+                    transform.rotation = Quaternion.Slerp(transform.rotation, playerController.character.spinObjects.transform.rotation, rSpeed * 10 * Time.deltaTime);
+                    transform.GetChild(0).transform.localPosition = new Vector3(0, 0, zPos);
+                    camPos = 0;
+                }
+            }
+            transform.GetChild(0).eulerAngles = new Vector3(0, 0, 0);
         }
     }
 }

@@ -8,6 +8,7 @@ public class Stats
 {
     public float mHp;
     public float hp;
+    public float healthRegen;
     public float shield;
 
     public float sinergy;

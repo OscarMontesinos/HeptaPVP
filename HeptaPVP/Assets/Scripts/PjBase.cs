@@ -10,6 +10,7 @@ using static UnityEngine.Rendering.DebugUI;
 
 public class PjBase : MonoBehaviour, TakeDamage
 {
+    Rigidbody2D rb;
     public UIManager UIManager;
     public GameManager manager;
     public PlayerController controller;
@@ -20,7 +21,6 @@ public class PjBase : MonoBehaviour, TakeDamage
     public HitData.Element element;
     public GameObject spinObjects;
     public Slider hpBar;
-    public TextMeshProUGUI hpText;
     public Slider stunnBar;
     public Sprite hab1Image;
     public Sprite hab2Image;
@@ -61,6 +61,7 @@ public class PjBase : MonoBehaviour, TakeDamage
     public virtual void Awake()
     {
         controller = GetComponent<PlayerController>();
+        rb = GetComponent<Rigidbody2D>();
     }
     public virtual void Start()
     {
@@ -71,6 +72,19 @@ public class PjBase : MonoBehaviour, TakeDamage
     }
     public virtual void Update()
     {
+        if(stats.hp < stats.mHp)
+        {
+            stats.hp += stats.healthRegen * Time.deltaTime;
+            if(stats.hp > stats.mHp)
+            {
+                stats.hp = stats.mHp;
+            }
+            if (hpBar != null)
+            {
+                hpBar.maxValue = stats.mHp;
+                hpBar.value = stats.hp;
+            }
+        }
         if (hide)
         {
             visuals.SetActive(false);
@@ -360,7 +374,6 @@ public class PjBase : MonoBehaviour, TakeDamage
         {
             hpBar.maxValue = stats.mHp;
             hpBar.value = stats.hp;
-            hpText.text = stats.hp.ToString("F0");
         }
     }
 
@@ -471,6 +484,15 @@ public class PjBase : MonoBehaviour, TakeDamage
 
     }
 
+    public virtual float CalculateStrength(float calculo)
+    {
+        float value = stats.strength;
+        value *= calculo / 100;
+        //valor.text = value.ToString();
+        return value;
+
+    }
+
     public virtual float CalculateControl(float calculo)
     {
         float value = stats.control;
@@ -517,18 +539,17 @@ public class PjBase : MonoBehaviour, TakeDamage
         {
             if (distance.magnitude > 0.7)
             {
-                controller.rb.velocity = distance.normalized * speed;
+                rb.velocity = distance.normalized * speed;
             }
             else
             {
-                controller.rb.velocity = distance * speed;
+                rb.velocity = distance * speed;
             }
             distance = destinyPoint - new Vector2(transform.position.x, transform.position.y);
             yield return null;
         }
         dashing = false;
-        GetComponent<Collider2D>().enabled = true;
-        controller.rb.velocity = new Vector2(0, 0);
+        rb.velocity = new Vector2(0, 0);
         if (!shutDownCollider)
         {
             GetComponent<Collider2D>().isTrigger = false;
@@ -548,18 +569,17 @@ public class PjBase : MonoBehaviour, TakeDamage
         {
             if (distance.magnitude > 0.7)
             {
-                controller.rb.velocity = distance.normalized * speed;
+                rb.velocity = distance.normalized * speed;
             }
             else
             {
-                controller.rb.velocity = distance * speed;
+                rb.velocity = distance * speed;
             }
             distance = destinyPoint - new Vector2(transform.position.x, transform.position.y);
             yield return null;
         }
         dashing = false;
-        GetComponent<Collider2D>().enabled = true;
-        controller.rb.velocity = new Vector2(0, 0);
+        rb.velocity = new Vector2(0, 0);
     }
 
     public void AnimationCursorLock(int value)

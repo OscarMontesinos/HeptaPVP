@@ -56,3 +56,6 @@ TagManager:
   - name: Pj
     uniqueID: 2261369803
     locked: 0
+  - name: DmgTxt
+    uniqueID: 850502537
+    locked: 0

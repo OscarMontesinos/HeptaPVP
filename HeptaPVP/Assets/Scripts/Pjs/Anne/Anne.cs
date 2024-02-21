@@ -17,7 +17,8 @@ public class Anne : PjBase
     public GameObject h2Arrow;
     public GameObject h2StormArrow;
     public float h2Attacks;
-    float h2AttacksCounter;
+    [HideInInspector]
+    public float h2AttacksCounter;
     public float h2AtSpdBuff;
     public float h2Dmg;
     public float h2Prerange;

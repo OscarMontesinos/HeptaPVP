@@ -26,6 +26,8 @@ public class PlayerController : MonoBehaviour
     {
         rb = character.GetComponent<Rigidbody2D>();
         cam.transform.parent.GetComponent<CameraController>().playerController = this;
+        character.hpBar.gameObject.SetActive(false);
+        character.stunnBar.gameObject.SetActive(false);
     }
 
     // Update is called once per frame

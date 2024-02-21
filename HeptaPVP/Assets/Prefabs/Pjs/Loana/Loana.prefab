@@ -349,7 +349,7 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDrag: 0
+  m_LinearDrag: 7
   m_AngularDrag: 0.05
   m_GravityScale: 0
   m_Material: {fileID: 0}
@@ -445,7 +445,6 @@ MonoBehaviour:
   element: 0
   spinObjects: {fileID: 294524932057363568}
   hpBar: {fileID: 0}
-  hpText: {fileID: 0}
   stunnBar: {fileID: 0}
   hab1Image: {fileID: 21300000, guid: a6dbe4e8d55646d4b83271d7ddea4604, type: 3}
   hab2Image: {fileID: 21300000, guid: 9a92d350aa0f8f048ab6f640d3a8a427, type: 3}
@@ -465,6 +464,7 @@ MonoBehaviour:
   stats:
     mHp: 155
     hp: 0
+    healthRegen: 0
     shield: 0
     sinergy: 40
     strength: 20

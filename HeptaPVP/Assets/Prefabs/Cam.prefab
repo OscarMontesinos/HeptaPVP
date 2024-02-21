@@ -164,9 +164,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerController: {fileID: 0}
-  speed: 15
+  speed: 25
   rSpeed: 2
   zPos: 0
   camDistance: 12
-  speedZoom: 0.65
+  speedZoom: 1
   cam: {fileID: 3368951896612981873}

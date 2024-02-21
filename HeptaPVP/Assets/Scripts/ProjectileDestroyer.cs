@@ -13,9 +13,13 @@ public class ProjectileDestroyer : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Wall") && projectile.collideWalls)
+        if (projectile != null)
         {
-           projectile.Die();
+            if (collision.CompareTag("Wall") && projectile.collideWalls)
+            {
+                projectile.Die();
+
+            }
         }
     }
 }
