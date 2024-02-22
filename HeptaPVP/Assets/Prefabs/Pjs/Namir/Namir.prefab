@@ -62,7 +62,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 5365894265650198557}
+  - {fileID: 8844710672246910737}
   m_Father: {fileID: 6610924540050287183}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -91,12 +91,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2383042322271143222}
   m_LocalRotation: {x: -0, y: -0, z: -0.9999999, w: 0.00050803646}
-  m_LocalPosition: {x: 0.815, y: -0.436, z: 0}
-  m_LocalScale: {x: 0.34601638, y: 0.34601638, z: 0.34601638}
+  m_LocalPosition: {x: 0, y: -0.44, z: 0}
+  m_LocalScale: {x: 0.3460164, y: 0.3460164, z: 0.34601638}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1141499049046041887}
-  m_Father: {fileID: 3843837100224492544}
+  m_Father: {fileID: 8844710672246910737}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -179.942}
 --- !u!212 &1576594259195895711
@@ -235,6 +235,38 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &3239054982123328146
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8844710672246910737}
+  m_Layer: 3
+  m_Name: NamirCuchillo
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8844710672246910737
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3239054982123328146}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 5365894265650198557}
+  m_Father: {fileID: 3843837100224492544}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3837484798003312923
 GameObject:
   m_ObjectHideFlags: 0
@@ -364,7 +396,7 @@ MonoBehaviour:
   hab3Image: {fileID: 21300000, guid: f25fc978a17a89642b628d5f1858b5de, type: 3}
   currentComboReset: 0
   currentHab1Cd: 0
-  hab1Cd: 14
+  hab1Cd: 10
   currentHab2Cd: 0
   hab2Cd: 15
   currentHab3Cd: 0
@@ -394,7 +426,28 @@ MonoBehaviour:
   visuals: {fileID: 8947138123045533742}
   aPoint: {fileID: 8708404727031589226}
   aArea: 2.5
-  aDmg: 30
+  aDmg: 20
+  h1TimeToDash: 5
+  h1Area: 2
+  h1Dmg1: 10
+  h1Spd1: 30
+  h1Range1: 15
+  h1Dmg2: 20
+  h1Spd2: 22.5
+  h1Range2: 10
+  h1Stunn2: 0.75
+  h1Dmg3: 45
+  h1Spd3: 45
+  h1Range3: 15
+  h2Cloud: {fileID: 2887882023271162129, guid: 7c29e24e641dd434c94590af15b0979b, type: 3}
+  h2CloudDuration: 5
+  h2BuffDuration: 3
+  h2Buff: 4
+  h3Attacks: 3
+  h3AtSpdBuff: 1.55
+  h3DmgModifier: 0.75
+  h3DmgOverTime: 30
+  h3Duration: 3
 --- !u!50 &6379600470355968154
 Rigidbody2D:
   serializedVersion: 4

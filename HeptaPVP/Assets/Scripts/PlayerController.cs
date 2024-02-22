@@ -33,25 +33,40 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-            foreach (PjBase unit in GameManager.Instance.pjList)
+        foreach (PjBase unit in GameManager.Instance.pjList)
+        {
+            if (unit != null)
             {
-                if (unit != null)
+
+                if (unit.team != character.team)
                 {
-                    
-                    if (unit.team != character.team)
+                    var dir = unit.transform.position - transform.position;
+                    if (!Physics2D.Raycast(transform.position, dir, dir.magnitude, wallLayer))
                     {
-                        var dir = unit.transform.position - transform.position;
-                        if (!Physics2D.Raycast(transform.position, dir, dir.magnitude, wallLayer))
+                        if (Physics2D.Raycast(transform.position, dir, dir.magnitude, GameManager.Instance.playerWallLayer))
                         {
-                            unit.hide = false;
+                            Barrier barrier = Physics2D.Raycast(transform.position, dir, dir.magnitude, GameManager.Instance.playerWallLayer).rigidbody.gameObject.GetComponent<Barrier>();
+                            if (barrier.user.team != character.team && barrier.deniesVision)
+                            {
+                                unit.hide = true;
+                            }
+                            else
+                            {
+                                unit.hide = false;
+                            }
                         }
                         else
                         {
-                            unit.hide = true;
+                            unit.hide = false;
                         }
+                    }
+                    else
+                    {
+                        unit.hide = true;
                     }
                 }
             }
+        }
 
         if(cam != Camera.main)
         {

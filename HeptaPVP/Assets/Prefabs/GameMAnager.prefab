@@ -56,8 +56,7 @@ MonoBehaviour:
     m_Bits: 8
   playerWallLayer:
     serializedVersion: 2
-    m_Bits: 384
-  ch1Dmg: 0
+    m_Bits: 128
   damageText: {fileID: 4968252197246574537, guid: b9878c8b0b9ffca40962c11c389a4747, type: 3}
   iceColor:
     serializedVersion: 2

@@ -6,11 +6,12 @@ using UnityEngine.UI;
 
 public class Barrier : MonoBehaviour, TakeDamage
 {
-    PjBase user;
+    public PjBase user;
     public float hp;
     float mHp;
     public float duration;
     public Slider hpBar;
+    public bool deniesVision;
 
     private void Update()
     {
@@ -26,12 +27,13 @@ public class Barrier : MonoBehaviour, TakeDamage
             hpBar.value = hp;
         }
     }
-    public virtual void SetUp(PjBase user, float hp, float duration)
+    public virtual void SetUp(PjBase user, float hp, float duration, bool deniesVision)
     {
         this.user = user;
         this.hp = hp;
         this.duration = duration;
         mHp = hp;
+        this.deniesVision = deniesVision;
     }
     void TakeDamage.Die()
     {

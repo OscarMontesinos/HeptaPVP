@@ -142,7 +142,7 @@ public class Anne : PjBase
         {
             animator.Play("Idle");
             currentHab3Cd = CDR(hab3Cd);
-            StartCoroutine(Dash(spinObjects.transform.up, h3Spd, h3Range));
+            StartCoroutine(Dash(pointer.transform.up, h3Spd, h3Range));
             h3Dashing = true;
             StartCoroutine(AnneDash());
         }

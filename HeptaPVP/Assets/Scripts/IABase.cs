@@ -62,26 +62,75 @@ public class IABase : MonoBehaviour
                 {
                     if (unit.team != character.team)
                     {
-                        if (!enemiesOnSight.Contains(unit))
+                        if (Physics2D.Raycast(transform.position, dir, dir.magnitude, GameManager.Instance.playerWallLayer))
                         {
-                            enemiesOnSight.Add(unit);
-                        }
-                        if (lowestEnemy == null || lowestEnemy.stats.hp > unit.stats.hp)
-                        {
-                            lowestEnemy = unit;
-                        }
+                            Barrier barrier = Physics2D.Raycast(transform.position, dir, dir.magnitude, GameManager.Instance.playerWallLayer).rigidbody.gameObject.GetComponent<Barrier>();
+                            if (barrier.deniesVision)
+                            {
+                                if (enemiesOnSight.Contains(unit))
+                                {
+                                    if (lowestEnemy == unit)
+                                    {
+                                        StartCoroutine(OnLowestLost());
+                                    }
+                                    if (closestEnemy == unit)
+                                    {
+                                        closestEnemy = null;
+                                    }
 
-                        if (closestEnemy == null)
-                        {
-                            closestEnemy = unit;
+                                    enemiesOnSight.Remove(unit);
+                                }
+                            }
+                            else
+                            {
+
+                                if (!enemiesOnSight.Contains(unit))
+                                {
+                                    enemiesOnSight.Add(unit);
+                                }
+                                if (lowestEnemy == null || lowestEnemy.stats.hp > unit.stats.hp)
+                                {
+                                    lowestEnemy = unit;
+                                }
+
+                                if (closestEnemy == null)
+                                {
+                                    closestEnemy = unit;
+                                }
+                                else
+                                {
+                                    Vector3 dist = unit.transform.position - transform.position;
+                                    Vector3 closestDist = closestEnemy.transform.position - transform.position;
+                                    if (dist.magnitude < closestDist.magnitude)
+                                    {
+                                        closestEnemy = unit;
+                                    }
+                                }
+                            }
                         }
                         else
                         {
-                            Vector3 dist = unit.transform.position - transform.position;
-                            Vector3 closestDist = closestEnemy.transform.position - transform.position;
-                            if(dist.magnitude < closestDist.magnitude)
+                            if (!enemiesOnSight.Contains(unit))
+                            {
+                                enemiesOnSight.Add(unit);
+                            }
+                            if (lowestEnemy == null || lowestEnemy.stats.hp > unit.stats.hp)
+                            {
+                                lowestEnemy = unit;
+                            }
+
+                            if (closestEnemy == null)
                             {
                                 closestEnemy = unit;
+                            }
+                            else
+                            {
+                                Vector3 dist = unit.transform.position - transform.position;
+                                Vector3 closestDist = closestEnemy.transform.position - transform.position;
+                                if (dist.magnitude < closestDist.magnitude)
+                                {
+                                    closestEnemy = unit;
+                                }
                             }
                         }
                     }
@@ -310,6 +359,17 @@ public class IABase : MonoBehaviour
         lowestEnemy = null;
     }
 
+    public float GetRemainingDistance()
+    {
+        if (agent.isOnNavMesh)
+        {
+            return (agent.remainingDistance);
+        }
+        else
+        {
+            return 100;
+        }
+    }
     private void OnDrawGizmosSelected()
     {
         Gizmos.DrawWireSphere(transform.position, viewDistance);

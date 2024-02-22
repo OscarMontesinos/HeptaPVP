@@ -30,6 +30,17 @@ public class IaAnne : IABase
             StartCoroutine(RestartIA());
             return;
         }
+        if(anne.stunTime > 0)
+        {
+            agent.speed = 0;
+            StartCoroutine(RestartIA());
+            return;
+        }
+        else if (agent.speed == 0)
+        {
+            agent.speed = character.stats.spd;
+        }
+
 
         if (playstyle == Playstyle.aggresive)
         {
@@ -62,7 +73,7 @@ public class IaAnne : IABase
             }
 
 
-            if (agent.remainingDistance < 1f)
+            if (GetRemainingDistance() < 1f)
             {
                 if (InRange(closestEnemy.gameObject, anne.h2Prerange + 3) && anne.h2AttacksCounter > 0)
                 {
@@ -105,7 +116,7 @@ public class IaAnne : IABase
                 anne.MainAttack();
             }
 
-            if (agent.remainingDistance < 1f)
+            if (GetRemainingDistance() < 1f)
             {
                 if (InRange(closestEnemy.gameObject, anne.h2Prerange + 3))
                 {
@@ -149,7 +160,7 @@ public class IaAnne : IABase
             }
 
 
-            if (agent.remainingDistance < 1f)
+            if (GetRemainingDistance() < 1f)
             {
                 PivotBackwards();
             }
@@ -158,7 +169,7 @@ public class IaAnne : IABase
         }
         else
         {
-            if (agent.remainingDistance < 1f || agent.velocity.magnitude <= 0.2f)
+            if (GetRemainingDistance() < 1f || agent.velocity.magnitude <= 0.2f)
             {
                 float randomWeight = Random.Range(minWeight, maxWeight);
                 float randomHeight = Random.Range(minHeight, maxHeight);

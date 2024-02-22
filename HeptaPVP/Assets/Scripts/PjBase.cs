@@ -53,6 +53,7 @@ public class PjBase : MonoBehaviour, TakeDamage
     public bool hide;
     public GameObject visuals;
     float healCount;
+    float dmgCount;
     public enum AttackType
     {
         Physical, Magical, None
@@ -285,40 +286,43 @@ public class PjBase : MonoBehaviour, TakeDamage
     {
         float calculo = 0;
         DamageText dText = null;
-        switch (element)
+        if (value + dmgCount > 1)
         {
-            case HitData.Element.ice:
-                dText = Instantiate(GameManager.Instance.damageText, transform.position + new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(damageTextOffset - 0.5f, damageTextOffset + 0.5f), 0), transform.rotation).GetComponent<DamageText>();
-                dText.textColor = GameManager.Instance.iceColor;
-                break;
-            case HitData.Element.fire:
-                dText = Instantiate(GameManager.Instance.damageText, transform.position + new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(damageTextOffset - 0.5f, damageTextOffset + 0.5f), 0), transform.rotation).GetComponent<DamageText>();
-                dText.textColor = GameManager.Instance.fireColor;
-                break;
-            case HitData.Element.water:
-                dText = Instantiate(GameManager.Instance.damageText, transform.position + new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(damageTextOffset - 0.5f, damageTextOffset + 0.5f), 0), transform.rotation).GetComponent<DamageText>();
-                dText.textColor = GameManager.Instance.waterColor;
-                break;
-            case HitData.Element.blood:
-                dText = Instantiate(GameManager.Instance.damageText, transform.position + new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(damageTextOffset - 0.5f, damageTextOffset + 0.5f), 0), transform.rotation).GetComponent<DamageText>();
-                dText.textColor = GameManager.Instance.bloodColor;
-                break;
-            case HitData.Element.desert:
-                dText = Instantiate(GameManager.Instance.damageText, transform.position + new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(damageTextOffset - 0.5f, damageTextOffset + 0.5f), 0), transform.rotation).GetComponent<DamageText>();
-                dText.textColor = GameManager.Instance.desertColor;
-                break;
-            case HitData.Element.wind:
-                dText = Instantiate(GameManager.Instance.damageText, transform.position + new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(damageTextOffset - 0.5f, damageTextOffset + 0.5f), 0), transform.rotation).GetComponent<DamageText>();
-                dText.textColor = GameManager.Instance.windColor;
-                break;
-            case HitData.Element.nature:
-                dText = Instantiate(GameManager.Instance.damageText, transform.position + new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(damageTextOffset - 0.5f, damageTextOffset + 0.5f), 0), transform.rotation).GetComponent<DamageText>();
-                dText.textColor = GameManager.Instance.natureColor;
-                break;
-            case HitData.Element.lightning:
-                dText = Instantiate(GameManager.Instance.damageText, transform.position + new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(damageTextOffset - 0.5f, damageTextOffset + 0.5f), 0), transform.rotation).GetComponent<DamageText>();
-                dText.textColor = GameManager.Instance.lightningColor;
-                break;
+            switch (element)
+            {
+                case HitData.Element.ice:
+                    dText = Instantiate(GameManager.Instance.damageText, transform.position + new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(damageTextOffset - 0.5f, damageTextOffset + 0.5f), 0), transform.rotation).GetComponent<DamageText>();
+                    dText.textColor = GameManager.Instance.iceColor;
+                    break;
+                case HitData.Element.fire:
+                    dText = Instantiate(GameManager.Instance.damageText, transform.position + new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(damageTextOffset - 0.5f, damageTextOffset + 0.5f), 0), transform.rotation).GetComponent<DamageText>();
+                    dText.textColor = GameManager.Instance.fireColor;
+                    break;
+                case HitData.Element.water:
+                    dText = Instantiate(GameManager.Instance.damageText, transform.position + new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(damageTextOffset - 0.5f, damageTextOffset + 0.5f), 0), transform.rotation).GetComponent<DamageText>();
+                    dText.textColor = GameManager.Instance.waterColor;
+                    break;
+                case HitData.Element.blood:
+                    dText = Instantiate(GameManager.Instance.damageText, transform.position + new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(damageTextOffset - 0.5f, damageTextOffset + 0.5f), 0), transform.rotation).GetComponent<DamageText>();
+                    dText.textColor = GameManager.Instance.bloodColor;
+                    break;
+                case HitData.Element.desert:
+                    dText = Instantiate(GameManager.Instance.damageText, transform.position + new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(damageTextOffset - 0.5f, damageTextOffset + 0.5f), 0), transform.rotation).GetComponent<DamageText>();
+                    dText.textColor = GameManager.Instance.desertColor;
+                    break;
+                case HitData.Element.wind:
+                    dText = Instantiate(GameManager.Instance.damageText, transform.position + new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(damageTextOffset - 0.5f, damageTextOffset + 0.5f), 0), transform.rotation).GetComponent<DamageText>();
+                    dText.textColor = GameManager.Instance.windColor;
+                    break;
+                case HitData.Element.nature:
+                    dText = Instantiate(GameManager.Instance.damageText, transform.position + new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(damageTextOffset - 0.5f, damageTextOffset + 0.5f), 0), transform.rotation).GetComponent<DamageText>();
+                    dText.textColor = GameManager.Instance.natureColor;
+                    break;
+                case HitData.Element.lightning:
+                    dText = Instantiate(GameManager.Instance.damageText, transform.position + new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(damageTextOffset - 0.5f, damageTextOffset + 0.5f), 0), transform.rotation).GetComponent<DamageText>();
+                    dText.textColor = GameManager.Instance.lightningColor;
+                    break;
+            }
         }
 
         if (type == AttackType.Magical)
@@ -362,7 +366,15 @@ public class PjBase : MonoBehaviour, TakeDamage
         }
 
 
-        dText.damageText.text = value.ToString("F0");
+        if (dText != null)
+        {
+            dText.damageText.text = (value + dmgCount).ToString("F0");
+            dmgCount = 0;
+        }
+        else
+        {
+            dmgCount += value;
+        }
 
         stats.hp -= value;
         user.RegisterDamage(value);
@@ -514,18 +526,12 @@ public class PjBase : MonoBehaviour, TakeDamage
     public virtual IEnumerator Dash(Vector2 direction, float speed, float range)
     {
         yield return null;
-        StartCoroutine(Dash(direction, speed, range, false, false));
+        StartCoroutine(Dash(direction, speed, range, false));
     }
-    public virtual IEnumerator Dash(Vector2 direction, float speed, float range, bool ignoreWalls, bool shutDownCollider)
+    public virtual IEnumerator Dash(Vector2 direction, float speed, float range, bool ignoreWalls)
     {
-        if (!shutDownCollider)
-        {
-            GetComponent<Collider2D>().isTrigger = true;
-        }
-        else
-        {
-            GetComponent<Collider2D>().enabled = false;
-        }
+        GetComponent<Collider2D>().isTrigger = true;
+
         dashing = true;
         Vector2 destinyPoint = Physics2D.Raycast(transform.position, direction, range, GameManager.Instance.wallLayer).point;
         yield return null;
@@ -550,36 +556,8 @@ public class PjBase : MonoBehaviour, TakeDamage
         }
         dashing = false;
         rb.velocity = new Vector2(0, 0);
-        if (!shutDownCollider)
-        {
-            GetComponent<Collider2D>().isTrigger = false;
-        }
-    }
 
-    public virtual IEnumerator Dash(Vector2 direction, float speed, float range, bool ignoreWalls)
-    {
-        GetComponent<Collider2D>().enabled = false;
-        dashing = true;
-
-        Vector2 destinyPoint = new Vector2(transform.position.x, transform.position.y) + direction.normalized * range;
-
-        Vector2 distance = destinyPoint - new Vector2(transform.position.x, transform.position.y);
-        yield return null;
-        while (distance.magnitude > 1 && dashing && stunTime <= 0)
-        {
-            if (distance.magnitude > 0.7)
-            {
-                rb.velocity = distance.normalized * speed;
-            }
-            else
-            {
-                rb.velocity = distance * speed;
-            }
-            distance = destinyPoint - new Vector2(transform.position.x, transform.position.y);
-            yield return null;
-        }
-        dashing = false;
-        rb.velocity = new Vector2(0, 0);
+        GetComponent<Collider2D>().isTrigger = false;
     }
 
     public void AnimationCursorLock(int value)
