@@ -9,10 +9,12 @@ public class Namir : PjBase
     public float aArea;
     public float aDmg;
 
-    bool h1Dashing;
+    [HideInInspector]
+    public bool h1Dashing;
     float h1DashActive;
     public float h1TimeToDash;
-    float h1AttacksCounter;
+    [HideInInspector]
+    public float h1AttacksCounter;
     public float h1Area;
     public float h1Dmg1;
     public float h1Spd1;
@@ -25,13 +27,15 @@ public class Namir : PjBase
     public float h1Spd3;
     public float h1Range3;
 
+    public Barrier h2ActiveCloud;
     public GameObject h2Cloud;
     public float h2CloudDuration;
     public float h2BuffDuration;
     public float h2Buff;
 
     public float h3Attacks;
-    float h3AttacksCounter;
+    [HideInInspector]
+    public float h3AttacksCounter;
     public float h3AtSpdBuff;
     public float h3DmgModifier;
     public float h3DmgOverTime;
@@ -291,6 +295,7 @@ public class Namir : PjBase
         {
             Barrier cloud = Instantiate(h2Cloud, transform.position, transform.rotation).GetComponent<Barrier>();
             cloud.SetUp(this, 1, h2CloudDuration, true);
+            h2ActiveCloud = cloud;
             NamirSpd spd = gameObject.AddComponent<NamirSpd>();
             spd.SetUp(this,h2BuffDuration,h2Buff);
             currentHab2Cd = CDR(hab2Cd);
@@ -318,6 +323,16 @@ public class Namir : PjBase
             currentHab3Cd = h3AttacksCounter;
         }
     }
+
+    public override void OnKill(PjBase target)
+    {
+        base.OnKill(target);
+        if(h2ActiveCloud != null)
+        {
+            h2ActiveCloud.SetUp(this, 1, h2CloudDuration, true);
+        }
+    }
+
     private void OnDrawGizmosSelected()
     {
         Gizmos.DrawWireSphere(aPoint.transform.position, aArea);

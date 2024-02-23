@@ -48,6 +48,7 @@ public class IABase : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         if (character.dashing)
         {
             agent.destination = transform.position;
@@ -65,7 +66,7 @@ public class IABase : MonoBehaviour
                         if (Physics2D.Raycast(transform.position, dir, dir.magnitude, GameManager.Instance.playerWallLayer))
                         {
                             Barrier barrier = Physics2D.Raycast(transform.position, dir, dir.magnitude, GameManager.Instance.playerWallLayer).rigidbody.gameObject.GetComponent<Barrier>();
-                            if (barrier.deniesVision)
+                            if (barrier.deniesVision && barrier.user.team != character.team)
                             {
                                 if (enemiesOnSight.Contains(unit))
                                 {
@@ -228,8 +229,11 @@ public class IABase : MonoBehaviour
 
     public virtual void Look(Vector3 position)
     {
-        position = position - transform.position;
-        character.pointer.transform.up = position;
+        if (!character.lockPointer)
+        {
+            position = position - transform.position;
+            character.pointer.transform.up = position;
+        }
     }
     public virtual void LookReverse(Vector3 position)
     {
@@ -256,6 +260,8 @@ public class IABase : MonoBehaviour
 
     public virtual void IA()
     {
+        agent.speed = character.stats.spd;
+
         if (enemiesOnSight.Count >1)
         {
             if (lowestEnemy == null || closestEnemy == null)
@@ -346,6 +352,35 @@ public class IABase : MonoBehaviour
 
         NavMesh.SamplePosition(point, out hit, 100, 1);
         agent.destination = point;
+    }
+
+    public virtual void RunAway()
+    {
+        Vector3 point = new Vector3(Random.Range(minWeight, maxWeight), Random.Range(minHeight, maxHeight),transform.position.z);
+        NavMeshHit hit;
+        NavMesh.SamplePosition(point, out hit, 100, 1);
+
+        Vector3 myDist = transform.position - point;
+        Vector3 enemyDist = closestEnemy.transform.position - point;
+
+        int searchTimes = 0;
+
+        while (myDist.magnitude < enemyDist.magnitude && searchTimes < 5)
+        {
+            point = new Vector3(Random.Range(minWeight, maxWeight), Random.Range(minHeight, maxHeight), transform.position.z);
+            NavMesh.SamplePosition(point, out hit, 100, 1);
+
+            myDist = closestEnemy.transform.position - transform.position;
+            enemyDist = closestEnemy.transform.position - point;
+            searchTimes++;
+        }
+
+        agent.destination = hit.position;
+
+        if(searchTimes >= 5)
+        {
+            agent.destination = agent.transform.position;
+        }
     }
 
     public virtual IEnumerator OnLowestLost()

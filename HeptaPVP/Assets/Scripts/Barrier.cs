@@ -18,7 +18,7 @@ public class Barrier : MonoBehaviour, TakeDamage
         duration -= Time.deltaTime;
         if (duration <= 0)
         {
-            GetComponent<TakeDamage>().Die();
+            GetComponent<TakeDamage>().Die(null);
         }
 
         if (hpBar != null)
@@ -35,7 +35,7 @@ public class Barrier : MonoBehaviour, TakeDamage
         mHp = hp;
         this.deniesVision = deniesVision;
     }
-    void TakeDamage.Die()
+    void TakeDamage.Die(PjBase killer)
     {
         Destroy(gameObject);
     }
@@ -50,7 +50,7 @@ public class Barrier : MonoBehaviour, TakeDamage
         hp -= value;
         if (hp <= 0)
         {
-            GetComponent<TakeDamage>().Die();
+            GetComponent<TakeDamage>().Die(user);
         }
     }
 }

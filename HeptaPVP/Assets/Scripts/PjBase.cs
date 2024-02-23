@@ -16,7 +16,9 @@ public class PjBase : MonoBehaviour, TakeDamage
     public PlayerController controller;
     public GameObject sprite;
     public string chName;
-    public int team; 
+    public int team;
+    [HideInInspector]
+    public bool lockPointer;
     public GameObject pointer;
     public HitData.Element element;
     public GameObject spinObjects;
@@ -380,7 +382,7 @@ public class PjBase : MonoBehaviour, TakeDamage
         user.RegisterDamage(value);
         if (stats.hp <= 0)
         {
-            GetComponent<TakeDamage>().Die();
+            GetComponent<TakeDamage>().Die(user);
         }
         if (hpBar != null)
         {
@@ -482,8 +484,9 @@ public class PjBase : MonoBehaviour, TakeDamage
     {
         this.stunTime += stunTime;
     }
-    void TakeDamage.Die()
+    void TakeDamage.Die(PjBase killer)
     {
+        killer.OnKill(this);
         Destroy(gameObject);
     }
 
@@ -562,13 +565,27 @@ public class PjBase : MonoBehaviour, TakeDamage
 
     public void AnimationCursorLock(int value)
     {
-        if (value == 1)
+        if (controller != null)
         {
-            controller.LockPointer(true);
+            if (value == 1)
+            {
+                controller.LockPointer(true);
+            }
+            else
+            {
+                controller.LockPointer(false);
+            }
         }
         else
         {
-            controller.LockPointer(false);
+            if (value == 1)
+            {
+                lockPointer = true;
+            }
+            else
+            {
+                lockPointer = false;
+            }
         }
     }
 

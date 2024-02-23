@@ -31,6 +31,11 @@ public class NamirVenom : Buff
     {
         base.Update();
 
+        if(user == null)
+        {
+            Die();
+        }
+
         bool end = true;
 
         foreach (Venom venom in venoms)

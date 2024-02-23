@@ -386,6 +386,7 @@ MonoBehaviour:
   sprite: {fileID: 2692231894551362283}
   chName: Namir
   team: 0
+  lockPointer: 0
   pointer: {fileID: 5814091388882173867}
   element: 3
   spinObjects: {fileID: 294524932057363568}
@@ -427,8 +428,10 @@ MonoBehaviour:
   aPoint: {fileID: 8708404727031589226}
   aArea: 2.5
   aDmg: 20
+  h1Dashing: 0
   h1TimeToDash: 5
-  h1Area: 2
+  h1AttacksCounter: 0
+  h1Area: 2.75
   h1Dmg1: 10
   h1Spd1: 30
   h1Range1: 15
@@ -439,11 +442,13 @@ MonoBehaviour:
   h1Dmg3: 45
   h1Spd3: 45
   h1Range3: 15
+  h2ActiveCloud: {fileID: 0}
   h2Cloud: {fileID: 2887882023271162129, guid: 7c29e24e641dd434c94590af15b0979b, type: 3}
   h2CloudDuration: 5
   h2BuffDuration: 3
   h2Buff: 4
   h3Attacks: 3
+  h3AttacksCounter: 0
   h3AtSpdBuff: 1.55
   h3DmgModifier: 0.75
   h3DmgOverTime: 30
