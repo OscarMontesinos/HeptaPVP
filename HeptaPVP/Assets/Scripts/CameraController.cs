@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
+    public GameObject fog;
     public PlayerController playerController;
     public float speed;
     public float rSpeed;
@@ -12,12 +13,15 @@ public class CameraController : MonoBehaviour
     public float camDistance;
     bool moveAlone;
     public float speedZoom;
+    public float zoomOut;
+    public float zoomIn;
     public Camera cam;
     bool rotateCamera;
     bool beginExpectate;
     // Start is called before the first frame update
     void Awake()
     {
+        zoomIn = cam.orthographicSize;
     }
 
     private void Start()
@@ -32,6 +36,17 @@ public class CameraController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            cam.orthographicSize = zoomOut;
+            fog.SetActive(false);
+        }
+        if (Input.GetKeyUp(KeyCode.Tab))
+        {
+            cam.orthographicSize = zoomIn;
+            fog.SetActive(true);
+        }
+
         if (playerController == null )
         {
             moveAlone = true;

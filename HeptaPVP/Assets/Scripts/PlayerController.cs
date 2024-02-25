@@ -33,22 +33,29 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        foreach (PjBase unit in GameManager.Instance.pjList)
+        if (!Input.GetKey(KeyCode.Tab))
         {
-            if (unit != null)
+            foreach (PjBase unit in GameManager.Instance.pjList)
             {
-
-                if (unit.team != character.team)
+                if (unit != null)
                 {
-                    var dir = unit.transform.position - transform.position;
-                    if (!Physics2D.Raycast(transform.position, dir, dir.magnitude, wallLayer))
+
+                    if (unit.team != character.team)
                     {
-                        if (Physics2D.Raycast(transform.position, dir, dir.magnitude, GameManager.Instance.playerWallLayer))
+                        var dir = unit.transform.position - transform.position;
+                        if (!Physics2D.Raycast(transform.position, dir, dir.magnitude, wallLayer))
                         {
-                            Barrier barrier = Physics2D.Raycast(transform.position, dir, dir.magnitude, GameManager.Instance.playerWallLayer).rigidbody.gameObject.GetComponent<Barrier>();
-                            if (barrier.user.team != character.team && barrier.deniesVision)
+                            if (Physics2D.Raycast(transform.position, dir, dir.magnitude, GameManager.Instance.playerWallLayer))
                             {
-                                unit.hide = true;
+                                Barrier barrier = Physics2D.Raycast(transform.position, dir, dir.magnitude, GameManager.Instance.playerWallLayer).rigidbody.gameObject.GetComponent<Barrier>();
+                                if (barrier.user.team != character.team && barrier.deniesVision)
+                                {
+                                    unit.hide = true;
+                                }
+                                else
+                                {
+                                    unit.hide = false;
+                                }
                             }
                             else
                             {
@@ -57,14 +64,17 @@ public class PlayerController : MonoBehaviour
                         }
                         else
                         {
-                            unit.hide = false;
+                            unit.hide = true;
                         }
                     }
-                    else
-                    {
-                        unit.hide = true;
-                    }
                 }
+            }
+        }
+        else
+        {
+            foreach (PjBase unit in GameManager.Instance.pjList)
+            {
+                unit.hide = false;
             }
         }
 

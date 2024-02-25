@@ -16,6 +16,7 @@ public class Ganya : PjBase
     public float aRange;
     public float aSpd;
     public float aDmg;
+    public float aPassiveMultiplier;
     public float aPassiveActiveSeconds;
     [HideInInspector]
     public float aCurrentPassiveActiveSeconds;
@@ -104,7 +105,7 @@ public class Ganya : PjBase
     public void Shoot2()
     {
         GanyaShoot arrow = Instantiate(aBullet, shooterPoint.transform.position, pointer.transform.rotation).GetComponent<GanyaShoot>();
-        arrow.SetUp(this, aSpd, aRange, CalculateStrength(aDmg * 0.35f));
+        arrow.SetUp(this, aSpd, aRange, CalculateStrength(aDmg * aPassiveMultiplier));
     }
 
     public IEnumerator RapidShoot()
@@ -177,9 +178,16 @@ public class Ganya : PjBase
         {
             aCurrentPassiveActiveSeconds = aPassiveActiveSeconds;
             StartCoroutine(Cast(0.2f));
-            StartCoroutine(Dash(pointer.transform.up, h1Spd, h1Range));
+            StartCoroutine(Hab1Dash());
             h1Charges--;
         }
+    }
+
+    IEnumerator Hab1Dash()
+    {
+        AnimationCursorLock(0);
+        yield return null;
+        StartCoroutine(Dash(pointer.transform.up, h1Spd, h1Range));
     }
 
 

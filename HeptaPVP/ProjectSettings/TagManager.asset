@@ -17,8 +17,8 @@ TagManager:
   - Wall
   - PlayerWall
   - ProjectileDestroyer
-  - 
-  - 
+  - Fog
+  - Fov
   - 
   - 
   - 
@@ -58,4 +58,7 @@ TagManager:
     locked: 0
   - name: DmgTxt
     uniqueID: 850502537
+    locked: 0
+  - name: Fog
+    uniqueID: 367900257
     locked: 0
