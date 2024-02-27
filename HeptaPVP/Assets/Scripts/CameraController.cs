@@ -65,6 +65,7 @@ public class CameraController : MonoBehaviour
                 {
                     unit.hide = false;
                 }
+                fog.SetActive(false);
             }
 
             if (Input.GetAxis("Mouse ScrollWheel") < 0f)

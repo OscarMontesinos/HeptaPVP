@@ -248,7 +248,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5eea6718bd88f06418543de28b25bf4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fog: {fileID: 0}
+  fog: {fileID: 309857460}
   playerController: {fileID: 0}
   speed: 25
   rSpeed: 2

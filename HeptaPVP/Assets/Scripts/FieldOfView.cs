@@ -17,7 +17,7 @@ public class FieldOfView : MonoBehaviour
     {
         int rayCount = 180;
         float angle = 0;
-        float viewDistance = Camera.main.orthographicSize * 2.1f;
+        float viewDistance = Camera.main.orthographicSize * 2.1f + 30;
         float angleIncrease = 360 / rayCount;
         Vector3 origin = transform.parent.position;
 
@@ -40,24 +40,29 @@ public class FieldOfView : MonoBehaviour
             }
             Vector3 vertex;
 
-            RaycastHit2D ray = Physics2D.Raycast(origin, UtilsClass.GetVectorFromAngle(angle), viewDistance, GameManager.Instance.wallLayer);
+            RaycastHit2D ray = Physics2D.Raycast(origin, UtilsClass.GetVectorFromAngle(angle), viewDistance, GameManager.Instance.playerWallLayer + GameManager.Instance.wallLayer);
             if (ray.collider == null)
             {
-                ray = Physics2D.Raycast(origin, UtilsClass.GetVectorFromAngle(angle), viewDistance, GameManager.Instance.playerWallLayer);
+                    vertex = origin + UtilsClass.GetVectorFromAngle(angle) * viewDistance;
+            }
+            else
+            {
+                Vector3 dist = origin - new Vector3(ray.point.x, ray.point.y, 0);
+                ray = Physics2D.Raycast(origin, UtilsClass.GetVectorFromAngle(angle), dist.magnitude + 2, GameManager.Instance.playerWallLayer);
+                RaycastHit2D rayWall = Physics2D.Raycast(origin, UtilsClass.GetVectorFromAngle(angle), viewDistance, GameManager.Instance.wallLayer);
                 if (ray && ray.rigidbody.GetComponent<Barrier>().deniesVision && ray.collider.GetComponent<Barrier>().user.team != team)
                 {
                     vertex = ray.point;
+                }
+                else if(rayWall)
+                {
+                    
+                    vertex = rayWall.point;
                 }
                 else
                 {
                     vertex = origin + UtilsClass.GetVectorFromAngle(angle) * viewDistance;
                 }
-            }
-            else
-            {
-                ray = Physics2D.Raycast(origin, UtilsClass.GetVectorFromAngle(angle), viewDistance, GameManager.Instance.playerWallLayer + GameManager.Instance.wallLayer);
-                
-                vertex = ray.point;
             }
 
 

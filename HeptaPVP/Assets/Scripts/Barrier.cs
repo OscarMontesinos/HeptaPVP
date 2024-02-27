@@ -13,6 +13,7 @@ public class Barrier : MonoBehaviour, TakeDamage
     public Slider hpBar;
     public bool deniesVision;
 
+
     private void Update()
     {
         duration -= Time.deltaTime;

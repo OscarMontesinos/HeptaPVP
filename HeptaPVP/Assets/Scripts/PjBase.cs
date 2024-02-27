@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.TextCore.Text;
 using UnityEngine.UI;
 using static UnityEngine.Rendering.DebugUI;
@@ -542,6 +543,11 @@ public class PjBase : MonoBehaviour, TakeDamage
         {
             destinyPoint = new Vector2(transform.position.x, transform.position.y) + direction.normalized * range;
         }
+
+        NavMeshHit hit;
+        NavMesh.SamplePosition(new Vector3(destinyPoint.x, destinyPoint.y, transform.position.z), out hit, 100, 1);
+        destinyPoint = hit.position;
+
         Vector2 distance = destinyPoint - new Vector2(transform.position.x, transform.position.y);
         yield return null;
         while (distance.magnitude > 1 && dashing && stunTime <= 0)

@@ -24,6 +24,7 @@ public class IaAnne : IABase
     {
         base.IA();
 
+
         if ((closestEnemy == null || lowestEnemy == null) && playstyle != Playstyle.none && playstyle != Playstyle.pursuing)
         {
             playstyle = Playstyle.none;
@@ -175,7 +176,8 @@ public class IaAnne : IABase
                 float randomHeight = Random.Range(minHeight, maxHeight);
                 NavMeshHit hit;
                 NavMesh.SamplePosition(new Vector3(randomWeight, randomHeight, transform.position.z ), out hit, 100, 1);
-                agent.destination = hit.position;
+                agent.SetDestination(hit.position) ;
+
             }
             StartCoroutine(RestartIA());
         }
