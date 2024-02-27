@@ -4,6 +4,7 @@ using System.Drawing;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Playables;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.TextCore.Text;
 
 public class IaAnne : IABase
@@ -11,7 +12,7 @@ public class IaAnne : IABase
     [HideInInspector]
     public Anne anne;
 
-    
+
 
     public override void Start()
     {
@@ -20,168 +21,139 @@ public class IaAnne : IABase
         IA();
     }
 
-    public override void IA()
+
+
+
+
+    public override void AgressiveBehaviour()
     {
-        base.IA();
-
-
-        if ((closestEnemy == null || lowestEnemy == null) && playstyle != Playstyle.none && playstyle != Playstyle.pursuing)
+        base.AgressiveBehaviour();
+        Look(lowestEnemy.transform.position);
+        if (anne.h2AttacksCounter <= 0 && anne.currentHab2Cd <= 0 && !InRange(lowestEnemy.gameObject, anne.h2Prerange + 5))
         {
-            playstyle = Playstyle.none;
-            StartCoroutine(RestartIA());
-            return;
+            anne.Hab2();
         }
-        if(anne.stunTime > 0)
+        else if (InRange(lowestEnemy.gameObject, anne.h2Prerange) && anne.h2AttacksCounter > 0)
         {
-            agent.speed = 0;
-            StartCoroutine(RestartIA());
-            return;
-        }
-        else if (agent.speed == 0)
-        {
-            agent.speed = character.stats.spd;
+            anne.Hab2();
         }
 
 
-        if (playstyle == Playstyle.aggresive)
+        if (anne.currentHab3Cd <= 0 && !InRange(lowestEnemy.gameObject, anne.h3Range + 4))
         {
-            Look(lowestEnemy.transform.position);
-            if (anne.h2AttacksCounter <= 0 && anne.currentHab2Cd <= 0 && !InRange(lowestEnemy.gameObject, anne.h2Prerange + 5) )
-            {
-                anne.Hab2();
-            }
-            else if (InRange(lowestEnemy.gameObject, anne.h2Prerange) && anne.h2AttacksCounter > 0)
-            {
-                anne.Hab2();
-            }
-
-
-            if (anne.currentHab3Cd <= 0 && !InRange(lowestEnemy.gameObject, anne.h3Range + 4))
-            {
-                StartCoroutine(DashForward());
-            }
-            else if (anne.h2AttacksCounter > 0 && InRange(lowestEnemy.gameObject, anne.h2Range + anne.h2Prerange))
-            {
-                anne.MainAttack();
-            }
-            else if (anne.currentHab1Cd <= 0 && InRange(lowestEnemy.gameObject, anne.h1Range) && !anne.IsSoftCasting())
-            {
-                anne.Hab1();
-            }
-            else if (InRange(lowestEnemy.gameObject, anne.aRange))
-            {
-                anne.MainAttack();
-            }
-
-
-            if (GetRemainingDistance() < 1f)
-            {
-                if (InRange(closestEnemy.gameObject, anne.h2Prerange + 3) && anne.h2AttacksCounter > 0)
-                {
-                    PivotBackwards();
-                }
-                else
-                {
-                    PivotForwards();
-                }
-            }
-
-            StartCoroutine(RestartIA());
+            StartCoroutine(DashForward());
         }
-        else if (playstyle == Playstyle.neutral)
+        else if (anne.h2AttacksCounter > 0 && InRange(lowestEnemy.gameObject, anne.h2Range + anne.h2Prerange))
         {
-            Look(lowestEnemy.transform.position);
-            if (anne.h2AttacksCounter <= 0 && anne.currentHab2Cd <= 0 && !InRange(lowestEnemy.gameObject, anne.h2Prerange))
-            {
-                anne.Hab2();
-            }
-            else if (InRange(lowestEnemy.gameObject, anne.h2Prerange) && anne.h2AttacksCounter > 0)
-            {
-                anne.Hab2();
-            }
-
-            if(anne.currentHab3Cd <= 0 && InRange(closestEnemy.gameObject, anne.h3Range -2))
-            {
-                StartCoroutine(DashBackward());
-            }
-            else if (anne.currentHab1Cd <= 0 && InRange(lowestEnemy.gameObject, anne.h1Range) && !anne.IsSoftCasting())
-            {
-                anne.Hab1();
-            }
-            else if (anne.h2AttacksCounter > 0 && InRange(lowestEnemy.gameObject, anne.h2Range + anne.h2Prerange))
-            {
-                anne.MainAttack();
-            }
-            else
-            {
-                anne.MainAttack();
-            }
-
-            if (GetRemainingDistance() < 1f)
-            {
-                if (InRange(closestEnemy.gameObject, anne.h2Prerange + 3))
-                {
-                    PivotBackwards();
-                }
-                else
-                {
-                    PivotForwards();
-                }
-            }
-
-            StartCoroutine(RestartIA());
+            anne.MainAttack();
         }
-        else if (playstyle == Playstyle.defensive)
+        else if (anne.currentHab1Cd <= 0 && InRange(lowestEnemy.gameObject, anne.h1Range) && !anne.IsSoftCasting())
         {
-            Look(lowestEnemy.transform.position);
-            if (anne.h2AttacksCounter <= 0 && anne.currentHab2Cd <= 0 && !InRange(lowestEnemy.gameObject, anne.h2Prerange))
-            {
-                anne.Hab2();
-            }
-            else if (InRange(lowestEnemy.gameObject, anne.h2Prerange) && anne.h2AttacksCounter > 0)
-            {
-                anne.Hab2();
-            }
-
-            if (anne.currentHab3Cd <= 0 && InRange(lowestEnemy.gameObject, anne.h3Range - 2))
-            {
-                StartCoroutine(DashBackward());
-            }
-            else if (anne.currentHab1Cd <= 0 && InRange(lowestEnemy.gameObject, anne.h1Range) && !anne.IsSoftCasting())
-            {
-                anne.Hab1();
-            }
-            else if (anne.h2AttacksCounter > 0 && InRange(lowestEnemy.gameObject, anne.h2Range + anne.h2Prerange))
-            {
-                anne.MainAttack();
-            }
-            else if (InRange(lowestEnemy.gameObject, anne.aRange))
-            {
-                anne.MainAttack();
-            }
+            anne.Hab1();
+        }
+        else if (InRange(lowestEnemy.gameObject, anne.aRange))
+        {
+            anne.MainAttack();
+        }
 
 
-            if (GetRemainingDistance() < 1f)
+        if (GetRemainingDistance() < 1f)
+        {
+            if (InRange(closestEnemy.gameObject, anne.h2Prerange + 3) && anne.h2AttacksCounter > 0)
             {
                 PivotBackwards();
             }
+            else
+            {
+                PivotForwards();
+            }
+        }
 
-            StartCoroutine(RestartIA());
+        StartCoroutine(RestartIA());
+    }
+
+    public override void NeutralBehaviour()
+    {
+        base.NeutralBehaviour();
+        Look(lowestEnemy.transform.position);
+        if (anne.h2AttacksCounter <= 0 && anne.currentHab2Cd <= 0 && !InRange(lowestEnemy.gameObject, anne.h2Prerange))
+        {
+            anne.Hab2();
+        }
+        else if (InRange(lowestEnemy.gameObject, anne.h2Prerange) && anne.h2AttacksCounter > 0)
+        {
+            anne.Hab2();
+        }
+
+        if (anne.currentHab3Cd <= 0 && InRange(closestEnemy.gameObject, anne.h3Range - 2))
+        {
+            StartCoroutine(DashBackward());
+        }
+        else if (anne.currentHab1Cd <= 0 && InRange(lowestEnemy.gameObject, anne.h1Range) && !anne.IsSoftCasting())
+        {
+            anne.Hab1();
+        }
+        else if (anne.h2AttacksCounter > 0 && InRange(lowestEnemy.gameObject, anne.h2Range + anne.h2Prerange))
+        {
+            anne.MainAttack();
         }
         else
         {
-            if (GetRemainingDistance() < 1f || agent.velocity.magnitude <= 0.2f)
-            {
-                float randomWeight = Random.Range(minWeight, maxWeight);
-                float randomHeight = Random.Range(minHeight, maxHeight);
-                NavMeshHit hit;
-                NavMesh.SamplePosition(new Vector3(randomWeight, randomHeight, transform.position.z ), out hit, 100, 1);
-                agent.SetDestination(hit.position) ;
-
-            }
-            StartCoroutine(RestartIA());
+            anne.MainAttack();
         }
-        
+
+        if (GetRemainingDistance() < 1f)
+        {
+            if (InRange(closestEnemy.gameObject, anne.h2Prerange + 3))
+            {
+                PivotBackwards();
+            }
+            else
+            {
+                PivotForwards();
+            }
+        }
+
+        StartCoroutine(RestartIA());
+    }
+
+    public override void DefensiveBehaviour()
+    {
+        base.DefensiveBehaviour();
+        Look(lowestEnemy.transform.position);
+        if (anne.h2AttacksCounter <= 0 && anne.currentHab2Cd <= 0 && !InRange(lowestEnemy.gameObject, anne.h2Prerange))
+        {
+            anne.Hab2();
+        }
+        else if (InRange(lowestEnemy.gameObject, anne.h2Prerange) && anne.h2AttacksCounter > 0)
+        {
+            anne.Hab2();
+        }
+
+        if (anne.currentHab3Cd <= 0 && InRange(lowestEnemy.gameObject, anne.h3Range - 2))
+        {
+            StartCoroutine(DashBackward());
+        }
+        else if (anne.currentHab1Cd <= 0 && InRange(lowestEnemy.gameObject, anne.h1Range) && !anne.IsSoftCasting())
+        {
+            anne.Hab1();
+        }
+        else if (anne.h2AttacksCounter > 0 && InRange(lowestEnemy.gameObject, anne.h2Range + anne.h2Prerange))
+        {
+            anne.MainAttack();
+        }
+        else if (InRange(lowestEnemy.gameObject, anne.aRange))
+        {
+            anne.MainAttack();
+        }
+
+
+        if (GetRemainingDistance() < 1f)
+        {
+            PivotBackwards();
+        }
+
+        StartCoroutine(RestartIA());
     }
 
     IEnumerator DashBackward()
@@ -197,7 +169,7 @@ public class IaAnne : IABase
                 Look(lowestEnemy.transform.position);
                 anne.MainAttack();
             }
-            else if(closestEnemy != null)
+            else if (closestEnemy != null)
             {
                 Look(closestEnemy.transform.position);
                 anne.MainAttack();

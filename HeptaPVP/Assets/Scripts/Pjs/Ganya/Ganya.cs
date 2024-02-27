@@ -169,6 +169,10 @@ public class Ganya : PjBase
                 h1CurrentRealCd = CDR(hab1Cd);
             }
         }
+        else
+        {
+            h1CurrentRealCd = CDR(hab1Cd);
+        }
     }
 
     public override void Hab1()
@@ -253,11 +257,7 @@ public class Ganya : PjBase
     public override void OnKill(PjBase target)
     {
         base.OnKill(target);
-        h1Charges++;
-        if(h1Charges > h1MaxCharges)
-        {
-            h1Charges = h1MaxCharges;
-        }
+        h1CurrentRealCd = 0;
     }
 
     private void OnDrawGizmos()

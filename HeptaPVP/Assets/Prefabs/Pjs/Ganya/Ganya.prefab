@@ -5281,14 +5281,14 @@ MonoBehaviour:
   currentHab2Cd: 0
   hab2Cd: 8
   currentHab3Cd: 0
-  hab3Cd: 50
+  hab3Cd: 45
   casting: 0
   softCasting: 0
   dashing: 0
   stunTime: 0
   ignoreSoftCastDebuff: 0
   stats:
-    mHp: 95
+    mHp: 85
     hp: 0
     healthRegen: 0.5
     shield: 0
@@ -5594,7 +5594,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9106249939082306139}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.71, y: 0.27, z: 0}
+  m_LocalPosition: {x: -0.48, y: 0.27, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

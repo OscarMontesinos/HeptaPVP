@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Burst.CompilerServices;
@@ -8,6 +9,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.TextCore.Text;
 using static UnityEngine.GraphicsBuffer;
+using Random = UnityEngine.Random;
 
 public class IABase : MonoBehaviour
 {
@@ -24,6 +26,8 @@ public class IABase : MonoBehaviour
     public float maxWeight;
     public float minHeight;
     public float maxHeight;
+
+    public PjBase characterToFollow;
 
     public Playstyle playstyle;
 
@@ -48,10 +52,14 @@ public class IABase : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
         if (character.dashing)
         {
+           agent.enabled = false;
+        }
+        else if (!agent.isActiveAndEnabled)
+        {
             agent.destination = transform.position;
+            agent.enabled = true;
         }
 
         foreach (PjBase unit in GameManager.Instance.pjList)
@@ -262,7 +270,7 @@ public class IABase : MonoBehaviour
     {
         agent.speed = character.stats.spd;
 
-        if (enemiesOnSight.Count >1)
+        if (enemiesOnSight.Count > 1)
         {
             if (lowestEnemy == null || closestEnemy == null)
             {
@@ -291,7 +299,77 @@ public class IABase : MonoBehaviour
                 }
             }
         }
+
+        if ((closestEnemy == null || lowestEnemy == null) && playstyle != Playstyle.none && playstyle != Playstyle.pursuing)
+        {
+            playstyle = Playstyle.none;
+            StartCoroutine(RestartIA());
+            return;
+        }
+        if (character.stunTime > 0)
+        {
+            agent.speed = 0;
+            StartCoroutine(RestartIA());
+            return;
+        }
+        else if (agent.speed == 0)
+        {
+            agent.speed = character.stats.spd;
+        }
+
+
+        if (playstyle == Playstyle.aggresive)
+        {
+            AgressiveBehaviour();
+        }
+        else if (playstyle == Playstyle.neutral)
+        {
+            NeutralBehaviour();
+        }
+        else if (playstyle == Playstyle.defensive)
+        {
+            DefensiveBehaviour();
+        }
+        else
+        {
+            NoneBehaviour();
+        }
     }
+
+    public virtual void AgressiveBehaviour()
+    {
+
+    }
+    public virtual void NeutralBehaviour()
+    {
+
+    }
+    public virtual void DefensiveBehaviour()
+    {
+
+    }
+    public virtual void NoneBehaviour()
+    {
+        if (characterToFollow == null)
+        {
+            if (GetRemainingDistance() < 1f || agent.velocity.magnitude <= 0.2f)
+            {
+                float randomWeight = Random.Range(minWeight, maxWeight);
+                float randomHeight = Random.Range(minHeight, maxHeight);
+                NavMeshHit hit;
+                NavMesh.SamplePosition(new Vector3(randomWeight, randomHeight, transform.position.z), out hit, 100, 1);
+                agent.SetDestination(hit.position);
+
+            }
+        }
+        else
+        {
+            PivotAroundObject(characterToFollow.gameObject);
+        }
+        StartCoroutine(RestartIA());
+    }
+
+
 
     public virtual IEnumerator RestartIA()
     {
@@ -350,6 +428,16 @@ public class IABase : MonoBehaviour
             agent.destination = point;
         }
 
+        NavMesh.SamplePosition(point, out hit, 100, 1);
+        agent.destination = point;
+    }
+
+    public virtual void PivotAroundObject(GameObject target)
+    {
+        Vector3 point = new Vector3(Random.Range(-3, 3), Random.Range(-3, 3), transform.position.z);
+        point += target.transform.position;
+
+        NavMeshHit hit;
         NavMesh.SamplePosition(point, out hit, 100, 1);
         agent.destination = point;
     }

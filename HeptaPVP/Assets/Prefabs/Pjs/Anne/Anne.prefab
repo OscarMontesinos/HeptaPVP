@@ -354,6 +354,7 @@ MonoBehaviour:
   sprite: {fileID: 2692231894551362283}
   chName: Anne
   team: 0
+  lockPointer: 0
   pointer: {fileID: 5814091388882173867}
   element: 2
   spinObjects: {fileID: 294524932057363568}
@@ -375,7 +376,7 @@ MonoBehaviour:
   stunTime: 0
   ignoreSoftCastDebuff: 0
   stats:
-    mHp: 60
+    mHp: 65
     hp: 0
     healthRegen: 0.4
     shield: 0
@@ -385,7 +386,7 @@ MonoBehaviour:
     control: 30
     cdr: 0
     spd: 7
-    fResist: 10
+    fResist: 15
     mResist: 30
     resist: 0
   damageTextOffset: 1
