@@ -52,15 +52,6 @@ public class IABase : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (character.dashing)
-        {
-           agent.enabled = false;
-        }
-        else if (!agent.isActiveAndEnabled)
-        {
-            agent.destination = transform.position;
-            agent.enabled = true;
-        }
 
         foreach (PjBase unit in GameManager.Instance.pjList)
         {
@@ -350,7 +341,7 @@ public class IABase : MonoBehaviour
     }
     public virtual void NoneBehaviour()
     {
-        if (characterToFollow == null)
+        if (characterToFollow == null && agent.enabled)
         {
             if (GetRemainingDistance() < 1f || agent.velocity.magnitude <= 0.2f)
             {
