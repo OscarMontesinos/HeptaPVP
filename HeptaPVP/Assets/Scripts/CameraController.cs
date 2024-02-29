@@ -116,9 +116,15 @@ public class CameraController : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                rotateCamera = !rotateCamera;
+                cam.orthographicSize += camDistance;
+                //rotateCamera = !rotateCamera;
+            }
+            if (Input.GetKeyUp(KeyCode.Space))
+            {
+                cam.orthographicSize -= camDistance;
             }
 
+            /*
             if (rotateCamera)
             {
                 transform.rotation = Quaternion.Slerp(transform.rotation, playerController.character.spinObjects.transform.rotation, rSpeed * Time.deltaTime);
@@ -142,7 +148,7 @@ public class CameraController : MonoBehaviour
                     camPos = 0;
                 }
             }
-            transform.GetChild(0).eulerAngles = new Vector3(0, 0, 0);
+            transform.GetChild(0).eulerAngles = new Vector3(0, 0, 0);*/
         }
     }
 }

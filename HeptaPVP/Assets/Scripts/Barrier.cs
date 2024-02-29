@@ -14,12 +14,12 @@ public class Barrier : MonoBehaviour, TakeDamage
     public bool deniesVision;
 
 
-    private void Update()
+    public virtual void Update()
     {
         duration -= Time.deltaTime;
         if (duration <= 0)
         {
-            GetComponent<TakeDamage>().Die(null);
+            PreDie(null);
         }
 
         if (hpBar != null)
@@ -53,5 +53,10 @@ public class Barrier : MonoBehaviour, TakeDamage
         {
             GetComponent<TakeDamage>().Die(user);
         }
+    }
+
+    public virtual void PreDie(PjBase killer)
+    {
+        GetComponent<TakeDamage>().Die(null);
     }
 }

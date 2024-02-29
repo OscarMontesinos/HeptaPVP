@@ -82,3 +82,4 @@ MonoBehaviour:
   bloodColor:
     serializedVersion: 2
     rgba: 4280229786
+  FoV: {fileID: 15680838488341122, guid: 59016fa050b749949a070cc5c2391425, type: 3}

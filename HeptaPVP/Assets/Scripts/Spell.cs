@@ -9,6 +9,7 @@ public class Spell : MonoBehaviour
     public float time;
     [HideInInspector]
     public bool untimed;
+    public List<PjBase> targets = new List<PjBase>();
 
     // Update is called once per frame
     public virtual void Update()

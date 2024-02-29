@@ -5288,13 +5288,13 @@ MonoBehaviour:
   stunTime: 0
   ignoreSoftCastDebuff: 0
   stats:
-    mHp: 85
+    mHp: 90
     hp: 0
     healthRegen: 0.5
     shield: 0
     sinergy: 15
     strength: 45
-    atSpd: 1.2
+    atSpd: 2.4
     control: 15
     cdr: 0
     spd: 8
@@ -5312,8 +5312,8 @@ MonoBehaviour:
   aBullet: {fileID: 4282777955935661697, guid: 9f592009e7706ac4aaecb800c277559c, type: 3}
   aRange: 12.5
   aSpd: 42.5
-  aDmg: 30
-  aPassiveMultiplier: 0.375
+  aDmg: 15
+  aPassiveMultiplier: 0.75
   aPassiveActiveSeconds: 4
   aCurrentPassiveActiveSeconds: 0
   aPassiveShoots: 5
@@ -5325,11 +5325,11 @@ MonoBehaviour:
   h2Point: {fileID: 7743758264388969070}
   h2Bomb: {fileID: 1887350478329182207, guid: 03fcc717b7cd5de4585e1073b480fde3, type: 3}
   h2Area: 6
-  h2Dmg: 20
-  h2Stunn: 1
+  h2Dmg: 15
+  h2Stunn: 0.7
   h2CastTime: 0.65
   h3Point: {fileID: 3837484798003312923}
-  h3Dmg: 55
+  h3Dmg: 47.5
   h3Weight: 2
   h3Height: 13
   h3CastTime: 0.35
@@ -5594,7 +5594,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9106249939082306139}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.48, y: 0.27, z: 0}
+  m_LocalPosition: {x: 0.71, y: 0.27, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

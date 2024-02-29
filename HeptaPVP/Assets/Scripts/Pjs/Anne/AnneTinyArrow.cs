@@ -20,6 +20,15 @@ public class AnneTinyArrow : Projectile
         this.dmg = dmg;
     }
 
+    public override void OnTriggerEnter2D(Collider2D collision)
+    {
+          if (collision.GetComponent<Barrier>() && collision.GetComponent<Barrier>().user.team != user.team)
+        {
+            collision.GetComponent<TakeDamage>().TakeDamage(user, dmg / 2, HitData.Element.water, PjBase.AttackType.Magical);
+            Die();
+        }
+    }
+
     public override void Die()
     {
         AnneBaseArrow arrow = Instantiate(geiser, transform.position, transform.rotation).GetComponent<AnneBaseArrow>();

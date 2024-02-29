@@ -409,9 +409,9 @@ MonoBehaviour:
   h2AttacksCounter: 0
   h2AtSpdBuff: 0.5
   h2Dmg: 22.5
-  h2Prerange: 15
+  h2Prerange: 7.5
   h2Prespd: 27.5
-  h2Range: 28
+  h2Range: 35.5
   h2Spd: 40
   h3Range: 12
   h3Spd: 30

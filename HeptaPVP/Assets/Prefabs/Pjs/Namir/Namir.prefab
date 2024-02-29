@@ -408,7 +408,7 @@ MonoBehaviour:
   stunTime: 0
   ignoreSoftCastDebuff: 0
   stats:
-    mHp: 75
+    mHp: 80
     hp: 0
     healthRegen: 0.9
     shield: 0

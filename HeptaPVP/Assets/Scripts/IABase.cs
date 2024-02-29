@@ -47,6 +47,7 @@ public class IABase : MonoBehaviour
         agent.angularSpeed = 300;
         agent.acceleration = character.stats.spd * 5;
         Destroy(character.UIManager.gameObject);
+        agent.areaMask = 1;
     }
 
     // Update is called once per frame

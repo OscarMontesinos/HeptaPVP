@@ -25,9 +25,15 @@ public class PlayerController : MonoBehaviour
     void Awake()
     {
         rb = character.GetComponent<Rigidbody2D>();
+        cam = FindObjectOfType<Camera>();
         cam.transform.parent.GetComponent<CameraController>().playerController = this;
         character.hpBar.gameObject.SetActive(false);
         character.stunnBar.gameObject.SetActive(false);
+    }
+
+    void Start()
+    {
+        Instantiate(GameManager.Instance.FoV, transform);
     }
 
     // Update is called once per frame

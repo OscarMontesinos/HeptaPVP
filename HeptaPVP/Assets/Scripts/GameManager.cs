@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.SceneManagement;
 using UnityEngine.TextCore.Text;
 
@@ -36,6 +37,7 @@ public class GameManager : MonoBehaviour
     public Color32 lightningColor;
     public Color32 bloodColor;
 
+    public GameObject FoV;
 
     public enum GameModes
     {

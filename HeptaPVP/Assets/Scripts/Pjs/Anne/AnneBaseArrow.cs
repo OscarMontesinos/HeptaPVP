@@ -20,6 +20,11 @@ public class AnneBaseArrow : Projectile
             collision.GetComponent<PjBase>().GetComponent<TakeDamage>().TakeDamage(user, dmg, HitData.Element.water,PjBase.AttackType.Magical);
             user.DamageDealed(user, collision.GetComponent<PjBase>(), dmg, HitData.Element.water, HitData.AttackType.range, HitData.HabType.basic);
         }
+        else if (collision.GetComponent<Barrier>() && collision.GetComponent<Barrier>().user.team != user.team)
+        {
+            collision.GetComponent<TakeDamage>().TakeDamage(user, dmg, HitData.Element.water, PjBase.AttackType.Magical);
+            Die();
+        }
         base.OnTriggerEnter2D(collision);
     }
 }

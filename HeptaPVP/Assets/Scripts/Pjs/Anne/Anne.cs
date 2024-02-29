@@ -84,6 +84,7 @@ public class Anne : PjBase
         {
             StartCoroutine(Cast(h1CastTime));
             animator.Play("ShootStrong");
+            h3Dashing = false;
         }
     }
     public void ShootBasicArrow()
