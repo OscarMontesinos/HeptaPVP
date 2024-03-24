@@ -259,7 +259,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3837484798003312923}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 7.31, z: 0}
+  m_LocalPosition: {x: 0, y: 4.81, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -356,7 +356,7 @@ MonoBehaviour:
   team: 0
   lockPointer: 0
   pointer: {fileID: 5814091388882173867}
-  element: 0
+  element: 2
   spinObjects: {fileID: 294524932057363568}
   hpBar: {fileID: 792207608858510727}
   stunnBar: {fileID: 2561196975209033470}
@@ -397,19 +397,21 @@ MonoBehaviour:
   aArea: 2.75
   aDmg: 17.5
   h1Point: {fileID: 3837484798003312923}
-  h1Area: 7
+  h1Area: 4.5
   h1Dmg: 25
   h1StunTime: 1
   h1AtSpdMultiplier: 1.5
+  h1BuffSpd: 6
+  h1BuffDuration: 1
   h2Bubble: {fileID: 3387212674506252671, guid: 97889451c96699a49a9333f5842d9da0, type: 3}
   h2Exh: 50
   h2BubbleHp: 300
   h2BubbleDuration: 12
   h3Wave: {fileID: 428383520916342995, guid: 6842318b4509f0a47bdd552c39f258e3, type: 3}
   h3Range: 35
-  h3Speed: 15
-  h3Dmg: 32.5
-  h3Slow: 3.5
+  h3Speed: 22.5
+  h3Dmg: 25
+  h3Slow: 4.5
   h3Time: 2
   h3CastTime: 3.4
 --- !u!50 &6379600470355968154

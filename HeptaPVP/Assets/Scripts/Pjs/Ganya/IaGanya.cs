@@ -11,7 +11,6 @@ public class IaGanya : IABase
     {
         base.Start();
         ganya = GetComponent<Ganya>();
-        IA();
     }
 
     public override void AgressiveBehaviour()

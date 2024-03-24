@@ -27,6 +27,7 @@ public class GameManager : MonoBehaviour
     public LayerMask playerWallLayer;
 
     public GameObject damageText;
+    public GameObject iaTeam;
 
     public Color32 iceColor;
     public Color32 fireColor;
@@ -38,6 +39,13 @@ public class GameManager : MonoBehaviour
     public Color32 bloodColor;
 
     public GameObject FoV;
+
+    public float minWeight;
+    public float maxWeight;
+    public float minHeight;
+    public float maxHeight;
+
+    public float ingameSpeed;
 
     public enum GameModes
     {
@@ -58,7 +66,7 @@ public class GameManager : MonoBehaviour
     }
     void Start()
     {
-
+        Time.timeScale = ingameSpeed;
     }
 
     // Update is called once per frame

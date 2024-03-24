@@ -39,7 +39,7 @@ public class UIManager : MonoBehaviour
         {
             if(Time.timeScale == 0)
             {
-                Time.timeScale = 1;
+                Time.timeScale = GameManager.Instance.ingameSpeed;
                 pauseMenu.SetActive(false);
             }
             else

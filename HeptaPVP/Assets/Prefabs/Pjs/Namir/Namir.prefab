@@ -433,14 +433,14 @@ MonoBehaviour:
   h1AttacksCounter: 0
   h1Area: 2.75
   h1Dmg1: 10
-  h1Spd1: 30
+  h1Spd1: 40
   h1Range1: 15
   h1Dmg2: 20
   h1Spd2: 22.5
   h1Range2: 10
   h1Stunn2: 0.75
   h1Dmg3: 45
-  h1Spd3: 45
+  h1Spd3: 60
   h1Range3: 15
   h2ActiveCloud: {fileID: 0}
   h2Cloud: {fileID: 2887882023271162129, guid: 7c29e24e641dd434c94590af15b0979b, type: 3}

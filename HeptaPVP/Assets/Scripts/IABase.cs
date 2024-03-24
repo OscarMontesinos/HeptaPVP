@@ -9,23 +9,28 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.TextCore.Text;
 using static UnityEngine.GraphicsBuffer;
+using static UnityEngine.UI.CanvasScaler;
 using Random = UnityEngine.Random;
 
 public class IABase : MonoBehaviour
 {
+    [HideInInspector]
+    public IATeam team;
     [HideInInspector]
     public NavMeshAgent agent;
     [HideInInspector]
     public PjBase character;
     static float viewDistance = 40f;
     public List<PjBase> enemiesOnSight = new List<PjBase>();
-    public List<PjBase> alliesOnSight = new List<PjBase>();
+    public List<PjBase> closeAllies = new List<PjBase>();
     public PjBase lowestEnemy;
     public PjBase closestEnemy;
-    public float minWeight;
-    public float maxWeight;
-    public float minHeight;
-    public float maxHeight;
+    public PjBase lowestAlly;
+    public PjBase closestAlly;
+    float minWeight;
+    float maxWeight;
+    float minHeight;
+    float maxHeight;
 
     public PjBase characterToFollow;
 
@@ -48,6 +53,13 @@ public class IABase : MonoBehaviour
         agent.acceleration = character.stats.spd * 5;
         Destroy(character.UIManager.gameObject);
         agent.areaMask = 1;
+
+        minWeight = GameManager.Instance.minWeight;
+        maxWeight = GameManager.Instance.maxWeight;
+        minHeight = GameManager.Instance.minHeight;
+        maxHeight = GameManager.Instance.maxHeight;
+
+        Instantiate(GameManager.Instance.iaTeam).GetComponent<IATeam>().team = character.team;
     }
 
     // Update is called once per frame
@@ -70,16 +82,8 @@ public class IABase : MonoBehaviour
                             {
                                 if (enemiesOnSight.Contains(unit))
                                 {
-                                    if (lowestEnemy == unit)
-                                    {
-                                        StartCoroutine(OnLowestLost());
-                                    }
-                                    if (closestEnemy == unit)
-                                    {
-                                        closestEnemy = null;
-                                    }
-
                                     enemiesOnSight.Remove(unit);
+                                    team.UpdateEnemiesOnSight(unit);
                                 }
                             }
                             else
@@ -88,24 +92,7 @@ public class IABase : MonoBehaviour
                                 if (!enemiesOnSight.Contains(unit))
                                 {
                                     enemiesOnSight.Add(unit);
-                                }
-                                if (lowestEnemy == null || lowestEnemy.stats.hp > unit.stats.hp)
-                                {
-                                    lowestEnemy = unit;
-                                }
-
-                                if (closestEnemy == null)
-                                {
-                                    closestEnemy = unit;
-                                }
-                                else
-                                {
-                                    Vector3 dist = unit.transform.position - transform.position;
-                                    Vector3 closestDist = closestEnemy.transform.position - transform.position;
-                                    if (dist.magnitude < closestDist.magnitude)
-                                    {
-                                        closestEnemy = unit;
-                                    }
+                                    team.AddEnemiesOnSight(unit);
                                 }
                             }
                         }
@@ -114,32 +101,8 @@ public class IABase : MonoBehaviour
                             if (!enemiesOnSight.Contains(unit))
                             {
                                 enemiesOnSight.Add(unit);
+                                team.AddEnemiesOnSight(unit); 
                             }
-                            if (lowestEnemy == null || lowestEnemy.stats.hp > unit.stats.hp)
-                            {
-                                lowestEnemy = unit;
-                            }
-
-                            if (closestEnemy == null)
-                            {
-                                closestEnemy = unit;
-                            }
-                            else
-                            {
-                                Vector3 dist = unit.transform.position - transform.position;
-                                Vector3 closestDist = closestEnemy.transform.position - transform.position;
-                                if (dist.magnitude < closestDist.magnitude)
-                                {
-                                    closestEnemy = unit;
-                                }
-                            }
-                        }
-                    }
-                    else
-                    {
-                        if (!alliesOnSight.Contains(unit))
-                        {
-                            alliesOnSight.Add(unit);
                         }
                     }
                 }
@@ -149,25 +112,68 @@ public class IABase : MonoBehaviour
                     {
                         if (enemiesOnSight.Contains(unit))
                         {
-                            if(lowestEnemy == unit)
-                            {
-                                StartCoroutine(OnLowestLost());
-                            }
-                            if(closestEnemy == unit)
-                            {
-                                closestEnemy = null;
-                            }
-
                             enemiesOnSight.Remove(unit);
+                            team.UpdateEnemiesOnSight(unit);
+                        }
+                    }
+                }
+            }
+        }
+
+        UpdateEnemiesStatus();
+
+        foreach (PjBase ally in team.allies)
+        {
+            if (ally != null)
+            {
+                Vector2 dist = ally.transform.position - transform.position;
+                if (dist.magnitude > 25)
+                {
+                    if (closeAllies.Contains(ally))
+                    {
+                        closeAllies.Remove(ally);
+                        if(ally == closestAlly)
+                        {
+                            closestAlly = null;
+                        }
+                        if(ally == lowestAlly)
+                        {
+                            lowestAlly = null;
+                        }
+                    }
+                }
+                else
+                {
+                    if (!closeAllies.Contains(ally))
+                    {
+                        closeAllies.Add(ally);
+
+                    }
+
+                    if (closestAlly != null)
+                    {
+                        Vector3 closestDist = closestAlly.transform.position - transform.position;
+                        if (dist.magnitude < closestDist.magnitude)
+                        {
+                            closestAlly = ally;
                         }
                     }
                     else
                     {
-                        if (alliesOnSight.Contains(unit))
-                        {
-                            alliesOnSight.Remove(unit);
-                        }
+                        closestAlly = ally;
                     }
+                        if(lowestAlly != null)
+                        {
+                            if(lowestAlly.stats.hp > ally.stats.hp)
+                            {
+                                lowestAlly = ally;
+                            }
+                        }
+                        else
+                        {
+                            lowestAlly = ally;
+                        }
+
                 }
             }
         }
@@ -175,8 +181,9 @@ public class IABase : MonoBehaviour
         float enemiesHp = 0;
         float enemiesFullHp = 0;
         float alliesHp = 0;
+        float alliesFullHp = 0;
 
-        foreach (PjBase unit in enemiesOnSight)
+        foreach (PjBase unit in team.enemiesOnSight)
         {
             if (unit != null)
             {
@@ -185,17 +192,21 @@ public class IABase : MonoBehaviour
             }
         }
 
-        foreach (PjBase unit in alliesOnSight)
+        foreach (PjBase unit in closeAllies)
         {
             if (unit != null)
             {
                 alliesHp += unit.stats.hp;
+                alliesFullHp += unit.stats.mHp;
             }
         }
 
+        enemiesHp *= 100 / enemiesFullHp;
+        alliesHp *= 100 / alliesFullHp;
+
         if (enemiesHp > 0)
         {
-            if (enemiesHp - 20 > alliesHp)
+            if (character.stats.hp <= character.stats.mHp * 0.3f)
             {
                 if (playstyle != Playstyle.defensive)
                 {
@@ -203,7 +214,7 @@ public class IABase : MonoBehaviour
                 }
                 playstyle = Playstyle.defensive;
             }
-            else if (enemiesHp + 20 < alliesHp || enemiesFullHp * 0.35f >= enemiesHp)
+            else if (enemiesHp + 10 < alliesHp || enemiesHp <= 35)
             {
                 if (playstyle != Playstyle.aggresive)
                 {
@@ -218,6 +229,26 @@ public class IABase : MonoBehaviour
                     agent.destination = transform.position;
                 }
                 playstyle = Playstyle.neutral;
+            }
+
+            if (character.stats.hp < character.stats.mHp * 0.3f)
+            {
+                if (playstyle == Playstyle.aggresive)
+                {
+                    if (playstyle != Playstyle.neutral)
+                    {
+                        agent.destination = transform.position;
+                    }
+                    playstyle = Playstyle.neutral;
+                }
+                else if (playstyle == Playstyle.neutral)
+                {
+                    if (playstyle != Playstyle.defensive)
+                    {
+                        agent.destination = transform.position;
+                    }
+                    playstyle = Playstyle.defensive;
+                }
             }
         }
         else
@@ -262,11 +293,11 @@ public class IABase : MonoBehaviour
     {
         agent.speed = character.stats.spd;
 
-        if (enemiesOnSight.Count > 1)
+        if (team.enemiesOnSight.Count > 1)
         {
             if (lowestEnemy == null || closestEnemy == null)
             {
-                foreach (PjBase unit in enemiesOnSight)
+                foreach (PjBase unit in team.enemiesOnSight)
                 {
                     if (unit != null)
                     {
@@ -309,14 +340,35 @@ public class IABase : MonoBehaviour
             agent.speed = character.stats.spd;
         }
 
-
         if (playstyle == Playstyle.aggresive)
         {
-            AgressiveBehaviour();
+            if (IsTargetBehindWall(lowestEnemy))
+            {
+                if (GetRemainingDistance() < 1f)
+                {
+                    agent.destination = lowestEnemy.transform.position;
+                }
+                StartCoroutine(RestartIA());
+            }
+            else
+            {
+                AgressiveBehaviour();
+            }
         }
         else if (playstyle == Playstyle.neutral)
         {
-            NeutralBehaviour();
+            if (IsTargetBehindWall(closestEnemy))
+            {
+                if (GetRemainingDistance() < 1f)
+                {
+                    agent.destination = closestEnemy.transform.position;
+                }
+                StartCoroutine(RestartIA());
+            }
+            else
+            {
+                NeutralBehaviour();
+            }
         }
         else if (playstyle == Playstyle.defensive)
         {
@@ -326,6 +378,7 @@ public class IABase : MonoBehaviour
         {
             NoneBehaviour();
         }
+        
     }
 
     public virtual void AgressiveBehaviour()
@@ -356,7 +409,10 @@ public class IABase : MonoBehaviour
         }
         else
         {
-            PivotAroundObject(characterToFollow.gameObject);
+            if (GetRemainingDistance() < 3f)
+            {
+                PivotAroundObject(characterToFollow.gameObject);
+            }
         }
         StartCoroutine(RestartIA());
     }
@@ -426,7 +482,7 @@ public class IABase : MonoBehaviour
 
     public virtual void PivotAroundObject(GameObject target)
     {
-        Vector3 point = new Vector3(Random.Range(-3, 3), Random.Range(-3, 3), transform.position.z);
+        Vector3 point = new Vector3(Random.Range(-7, 7), Random.Range(-7, 7), transform.position.z);
         point += target.transform.position;
 
         NavMeshHit hit;
@@ -465,7 +521,7 @@ public class IABase : MonoBehaviour
 
     public virtual IEnumerator OnLowestLost()
     {
-        if (playstyle == Playstyle.aggresive || playstyle == Playstyle.neutral && enemiesOnSight.Count <1)
+        if (playstyle == Playstyle.aggresive || playstyle == Playstyle.neutral && team.enemiesOnSight.Count <1)
         {
             playstyle = Playstyle.pursuing;
             yield return null;
@@ -483,6 +539,70 @@ public class IABase : MonoBehaviour
         else
         {
             return 100;
+        }
+    }
+
+    public bool IsPjAsolated(PjBase target)
+    {
+        foreach(PjBase enemy in team.enemiesOnSight)
+        {
+            if(enemy != null && enemy != target)
+            {
+                Vector2 dist = enemy.transform.position - target.transform.position;
+                if(dist.magnitude < 12)
+                {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public bool IsTargetBehindWall(PjBase unit)
+    {
+        Vector2 dir = unit.transform.position - transform.position;
+        if (Physics2D.Raycast(transform.position, dir, dir.magnitude, GameManager.Instance.wallLayer))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    void UpdateEnemiesStatus()
+    {
+        foreach(PjBase unit in team.enemiesOnSight)
+        {
+            if(unit != null)
+            {
+                if(closestEnemy != null)
+                {
+                    Vector2 dist = unit.transform.position - transform.position;
+                    Vector2 distClosest = closestEnemy.transform.position - transform.position;
+                    if(dist.magnitude < distClosest.magnitude)
+                    {
+                        closestEnemy = unit;
+                    }
+                }
+                else
+                {
+                    closestEnemy = unit;
+                }
+
+                if(lowestEnemy != null)
+                {
+                    if (lowestEnemy.stats.hp > unit.stats.hp)
+                    {
+                        lowestEnemy = unit;
+                    }
+                }
+                else
+                {
+                    lowestEnemy = unit;
+                }
+            }
         }
     }
     private void OnDrawGizmosSelected()

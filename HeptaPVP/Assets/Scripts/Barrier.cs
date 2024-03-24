@@ -12,6 +12,8 @@ public class Barrier : MonoBehaviour, TakeDamage
     public float duration;
     public Slider hpBar;
     public bool deniesVision;
+    public bool indestructible;
+    public bool damageable = true;
 
 
     public virtual void Update()
@@ -38,7 +40,7 @@ public class Barrier : MonoBehaviour, TakeDamage
     }
     void TakeDamage.Die(PjBase killer)
     {
-        Destroy(gameObject);
+            Destroy(gameObject);
     }
 
     void TakeDamage.Stunn(float stunnTime)
@@ -49,7 +51,7 @@ public class Barrier : MonoBehaviour, TakeDamage
     void TakeDamage.TakeDamage(PjBase user, float value, HitData.Element element, PjBase.AttackType type)
     {
         hp -= value;
-        if (hp <= 0)
+        if (hp <= 0 && !indestructible)
         {
             GetComponent<TakeDamage>().Die(user);
         }

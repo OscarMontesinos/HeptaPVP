@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using CodeMonkey.Utils;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {   
@@ -27,13 +28,27 @@ public class PlayerController : MonoBehaviour
         rb = character.GetComponent<Rigidbody2D>();
         cam = FindObjectOfType<Camera>();
         cam.transform.parent.GetComponent<CameraController>().playerController = this;
-        character.hpBar.gameObject.SetActive(false);
-        character.stunnBar.gameObject.SetActive(false);
+        //character.hpBar.gameObject.SetActive(false);
+        //character.stunnBar.gameObject.SetActive(false);
     }
 
     void Start()
     {
-        Instantiate(GameManager.Instance.FoV, transform);
+        Instantiate(GameManager.Instance.FoV, transform).GetComponent<FieldOfView>().team = character.team;
+
+        StartCoroutine(PostStart());    
+    }
+    
+    IEnumerator PostStart()
+    {
+        yield return null;
+        foreach (PjBase unit in GameManager.Instance.pjList)
+        {
+            if (unit.team != character.team)
+            {
+                unit.hpBar.transform.GetChild(1).GetChild(0).GetComponent<Image>().color = Color.red;
+            }
+        }
     }
 
     // Update is called once per frame
@@ -179,7 +194,7 @@ public class PlayerController : MonoBehaviour
 
     void HandlePointer()
     {
-        if (!lockPointer)
+        if (!lockPointer && Time.timeScale != 0)
         {
             Vector2 dir = UtilsClass.GetMouseWorldPosition() - character.pointer.transform.position;
             character.pointer.transform.up = dir;

@@ -72,7 +72,6 @@ public class PjBase : MonoBehaviour, TakeDamage
         stats.hp = stats.mHp;
 
         GameManager.Instance.pjList.Add(this);
-        
     }
     public virtual void Update()
     {

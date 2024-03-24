@@ -58,6 +58,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   damageText: {fileID: 4968252197246574537, guid: b9878c8b0b9ffca40962c11c389a4747, type: 3}
+  iaTeam: {fileID: 7366464019298231138, guid: 4de8c2241155a3541a88706dbb65fdc1, type: 3}
   iceColor:
     serializedVersion: 2
     rgba: 4294704597
@@ -83,3 +84,8 @@ MonoBehaviour:
     serializedVersion: 2
     rgba: 4280229786
   FoV: {fileID: 15680838488341122, guid: 59016fa050b749949a070cc5c2391425, type: 3}
+  minWeight: 0
+  maxWeight: 0
+  minHeight: 0
+  maxHeight: 0
+  ingameSpeed: 0

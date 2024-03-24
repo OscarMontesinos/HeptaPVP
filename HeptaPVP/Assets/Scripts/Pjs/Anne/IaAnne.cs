@@ -18,7 +18,6 @@ public class IaAnne : IABase
     {
         base.Start();
         anne = GetComponent<Anne>();
-        IA();
     }
 
 
@@ -39,7 +38,7 @@ public class IaAnne : IABase
         }
 
 
-        if (anne.currentHab3Cd <= 0 && !InRange(lowestEnemy.gameObject, anne.h3Range + 4))
+        if (anne.currentHab3Cd <= 0 && !InRange(lowestEnemy.gameObject, anne.h3Range + 4) && IsPjAsolated(lowestEnemy))
         {
             StartCoroutine(DashForward());
         }
@@ -75,12 +74,12 @@ public class IaAnne : IABase
     public override void NeutralBehaviour()
     {
         base.NeutralBehaviour();
-        Look(lowestEnemy.transform.position);
-        if (anne.h2AttacksCounter <= 0 && anne.currentHab2Cd <= 0 && !InRange(lowestEnemy.gameObject, anne.h2Prerange))
+        Look(closestEnemy.transform.position);
+        if (anne.h2AttacksCounter <= 0 && anne.currentHab2Cd <= 0 && !InRange(closestEnemy.gameObject, anne.h2Prerange))
         {
             anne.Hab2();
         }
-        else if (InRange(lowestEnemy.gameObject, anne.h2Prerange) && anne.h2AttacksCounter > 0)
+        else if (InRange(closestEnemy.gameObject, anne.h2Prerange) && anne.h2AttacksCounter > 0)
         {
             anne.Hab2();
         }
@@ -89,11 +88,11 @@ public class IaAnne : IABase
         {
             StartCoroutine(DashBackward());
         }
-        else if (anne.currentHab1Cd <= 0 && InRange(lowestEnemy.gameObject, anne.h1Range) && !anne.IsSoftCasting())
+        else if (anne.currentHab1Cd <= 0 && InRange(closestEnemy.gameObject, anne.h1Range) && !anne.IsSoftCasting())
         {
             anne.Hab1();
         }
-        else if (anne.h2AttacksCounter > 0 && InRange(lowestEnemy.gameObject, anne.h2Range + anne.h2Prerange))
+        else if (anne.h2AttacksCounter > 0 && InRange(closestEnemy.gameObject, anne.h2Range + anne.h2Prerange))
         {
             anne.MainAttack();
         }
@@ -120,29 +119,29 @@ public class IaAnne : IABase
     public override void DefensiveBehaviour()
     {
         base.DefensiveBehaviour();
-        Look(lowestEnemy.transform.position);
-        if (anne.h2AttacksCounter <= 0 && anne.currentHab2Cd <= 0 && !InRange(lowestEnemy.gameObject, anne.h2Prerange))
+        Look(closestEnemy.transform.position);
+        if (anne.h2AttacksCounter <= 0 && anne.currentHab2Cd <= 0 && !InRange(closestEnemy.gameObject, anne.h2Prerange))
         {
             anne.Hab2();
         }
-        else if (InRange(lowestEnemy.gameObject, anne.h2Prerange) && anne.h2AttacksCounter > 0)
+        else if (InRange(closestEnemy.gameObject, anne.h2Prerange) && anne.h2AttacksCounter > 0)
         {
             anne.Hab2();
         }
 
-        if (anne.currentHab3Cd <= 0 && InRange(lowestEnemy.gameObject, anne.h3Range - 2))
+        if (anne.currentHab3Cd <= 0 && InRange(closestEnemy.gameObject, anne.h3Range - 2))
         {
             StartCoroutine(DashBackward());
         }
-        else if (anne.currentHab1Cd <= 0 && InRange(lowestEnemy.gameObject, anne.h1Range) && !anne.IsSoftCasting())
+        else if (anne.currentHab1Cd <= 0 && InRange(closestEnemy.gameObject, anne.h1Range) && !anne.IsSoftCasting())
         {
             anne.Hab1();
         }
-        else if (anne.h2AttacksCounter > 0 && InRange(lowestEnemy.gameObject, anne.h2Range + anne.h2Prerange))
+        else if (anne.h2AttacksCounter > 0 && InRange(closestEnemy.gameObject, anne.h2Range + anne.h2Prerange))
         {
             anne.MainAttack();
         }
-        else if (InRange(lowestEnemy.gameObject, anne.aRange))
+        else if (InRange(closestEnemy.gameObject, anne.aRange))
         {
             anne.MainAttack();
         }

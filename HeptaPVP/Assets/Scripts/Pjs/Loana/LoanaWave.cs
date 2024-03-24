@@ -14,7 +14,7 @@ public class LoanaWave : Projectile
         this.speed = spd;
         this.range = range;
         this.dmg = dmg;
-            this.slow = slow;
+        this.slow = slow;
     }
 
     public override void OnTriggerEnter2D(Collider2D collision)
@@ -36,11 +36,11 @@ public class LoanaWave : Projectile
                 }
                 targetsHitted.Add(target);
             }
-            else if (collision.GetComponent<Barrier>() && collision.GetComponent<Barrier>().user.team != user.team)
+        }
+            else if (collision.GetComponent<Barrier>() && collision.GetComponent<Barrier>().user.team != user.team && collision.GetComponent<Barrier>().damageable)
             {
                 collision.GetComponent<TakeDamage>().TakeDamage(user, dmg, HitData.Element.water, PjBase.AttackType.Magical);
                 Die();
             }
-        }
     }
 }

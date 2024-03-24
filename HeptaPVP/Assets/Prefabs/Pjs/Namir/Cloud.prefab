@@ -4968,6 +4968,8 @@ MonoBehaviour:
   duration: 0
   hpBar: {fileID: 0}
   deniesVision: 0
+  indestructible: 1
+  damageable: 0
 --- !u!50 &8591838589015443713
 Rigidbody2D:
   serializedVersion: 4

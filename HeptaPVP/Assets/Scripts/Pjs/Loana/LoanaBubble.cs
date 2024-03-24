@@ -11,20 +11,17 @@ public class LoanaBubble : Barrier
     public override void Update()
     {
         base.Update();
-        transform.localEulerAngles = Vector3.zero;
+        transform.eulerAngles = Vector3.zero;
     }
     public void SetUp(PjBase user, float hp, float duration, float debuff)
     {
         base.SetUp(user, hp, duration, false);
         this.debuff = debuff;
         debuffGo.SetUp(user, debuff);
-        StartCoroutine(Place());
     }
 
-
-    IEnumerator Place()
+    public void Place()
     {
-        yield return new WaitForSeconds(0.55f);
         transform.parent = null;
     }
 

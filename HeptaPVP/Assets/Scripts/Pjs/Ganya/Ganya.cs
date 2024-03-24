@@ -145,8 +145,15 @@ public class Ganya : PjBase
         AnimationCursorLock(0);
         if (h3Precast)
         {
-            animator.Play("GanyaHability");
-            StartCoroutine(Cast(h3CastTime));
+            if (currentHab3Cd <= 0)
+            {
+                animator.Play("GanyaHability");
+                StartCoroutine(Cast(h3CastTime));
+            }
+            else
+            {
+                h3Precast = false;
+            }
         }
     }
 

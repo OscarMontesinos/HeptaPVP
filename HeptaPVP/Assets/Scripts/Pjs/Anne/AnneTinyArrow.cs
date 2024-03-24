@@ -22,7 +22,7 @@ public class AnneTinyArrow : Projectile
 
     public override void OnTriggerEnter2D(Collider2D collision)
     {
-          if (collision.GetComponent<Barrier>() && collision.GetComponent<Barrier>().user.team != user.team)
+        if (collision.GetComponent<Barrier>() && collision.GetComponent<Barrier>().user.team != user.team && collision.GetComponent<Barrier>().damageable)
         {
             collision.GetComponent<TakeDamage>().TakeDamage(user, dmg / 2, HitData.Element.water, PjBase.AttackType.Magical);
             Die();

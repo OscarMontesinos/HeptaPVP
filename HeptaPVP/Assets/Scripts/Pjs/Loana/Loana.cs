@@ -4,6 +4,7 @@ using Unity.Burst.Intrinsics;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
+using static UnityEngine.GraphicsBuffer;
 
 public class Loana : PjBase
 {
@@ -19,6 +20,8 @@ public class Loana : PjBase
     public float h1Dmg;
     public float h1StunTime;
     public float h1AtSpdMultiplier;
+    public float h1BuffSpd;
+    public float h1BuffDuration;
 
     public GameObject h2Bubble;
     public float h2Exh;
@@ -77,7 +80,8 @@ public class Loana : PjBase
     {
         base.Hab1(); if (!IsCasting() && !IsStunned() && currentHab1Cd <= 0)
         {
-            StartCoroutine(Cast(CalculateAtSpd(stats.atSpd * h1AtSpdMultiplier)));
+            gameObject.AddComponent<LoanaSpeed>().SetUp(this, h1BuffDuration, h1BuffSpd);
+            StartCoroutine(SoftCast(CalculateAtSpd(stats.atSpd * h1AtSpdMultiplier)));
             animator.Play("LoanaStrongAttack");
             currentHab1Cd = CDR(hab1Cd) ; 
             combo = 1;

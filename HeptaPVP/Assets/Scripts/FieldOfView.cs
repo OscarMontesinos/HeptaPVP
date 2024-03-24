@@ -7,7 +7,8 @@ using UnityEngine.UI;
 public class FieldOfView : MonoBehaviour
 {
     Mesh mesh;
-    int team;
+    [HideInInspector]
+    public int team;
     private void Start()
     {
         mesh = new Mesh();

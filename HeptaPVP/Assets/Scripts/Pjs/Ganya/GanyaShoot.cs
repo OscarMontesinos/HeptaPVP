@@ -21,7 +21,7 @@ public class GanyaShoot : Projectile
             user.DamageDealed(user, collision.GetComponent<PjBase>(), dmg, HitData.Element.fire, HitData.AttackType.range, HitData.HabType.basic);
             Die();
         }
-        else if(collision.GetComponent<Barrier>() && collision.GetComponent<Barrier>().user.team != user.team)
+        else if(collision.GetComponent<Barrier>() && collision.GetComponent<Barrier>().user.team != user.team && collision.GetComponent<Barrier>().damageable)
         {
             collision.GetComponent<TakeDamage>().TakeDamage(user, dmg, HitData.Element.fire, PjBase.AttackType.Physical);
             Die();
