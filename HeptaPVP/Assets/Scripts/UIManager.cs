@@ -58,11 +58,11 @@ public class UIManager : MonoBehaviour
 
         ch.stunnBar = stunSlider;
 
-        shieldSlider.value = Shield.shieldAmount;
+        shieldSlider.value = ch.stats.shield;
         shieldSlider.maxValue = ch.stats.mHp*1.5f;
-        if (Shield.shieldAmount > 0)
+        if (ch.stats.shield > 0)
         {
-            shieldText.text = Shield.shieldAmount.ToString("F0");
+            shieldText.text = ch.stats.shield.ToString("F0");
         }
         else
         {

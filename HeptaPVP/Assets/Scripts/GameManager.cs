@@ -94,4 +94,11 @@ public class GameManager : MonoBehaviour
     {
         SceneManager.UnloadSceneAsync("CharacterSelector");
     }
+
+    public static Vector2 DirectionFromAngle(float eulerY, float angleInDegrees)
+    {
+        angleInDegrees += eulerY;
+        Vector3 angle = new Vector3(Mathf.Sin(angleInDegrees * Mathf.Deg2Rad), 0, Mathf.Cos(angleInDegrees * Mathf.Deg2Rad));
+        return new Vector2(-angle.x,angle.z);
+    }
 }

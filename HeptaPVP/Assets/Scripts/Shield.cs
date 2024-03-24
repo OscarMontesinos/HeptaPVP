@@ -4,29 +4,34 @@ using UnityEngine;
 
 public class Shield : Buff
 {
-    public static float shieldAmount;
-    public float singularShieldAmount;
+    public float shieldAmount;
 
     public virtual float ChangeShieldAmount(float value)
     {
-        if (value > -singularShieldAmount)
+        if (value >= -shieldAmount)
         {
-            singularShieldAmount += value;
             shieldAmount += value;
+            target.stats.shield += value;
             value = 0;
         }
         else
         {
-            value += singularShieldAmount;
-            singularShieldAmount = 0;
-            shieldAmount += value;
+            value += shieldAmount;
+            shieldAmount = 0;
+            target.stats.shield += value;
         }
 
-        if(shieldAmount < 0)
+        if(target.stats.shield < 0)
         {
-            shieldAmount = 0;
+            target.stats.shield = 0;
         }
 
         return -value;
+    }
+
+    public override void Die()
+    {
+        ChangeShieldAmount(-shieldAmount);
+        base.Die();
     }
 }

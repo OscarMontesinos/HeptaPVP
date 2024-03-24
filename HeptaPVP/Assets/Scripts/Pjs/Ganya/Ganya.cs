@@ -240,9 +240,11 @@ public class Ganya : PjBase
         PjBase enemy;
         foreach (Collider2D enemyColl in enemiesHit)
         {
-            enemy = enemyColl.GetComponent<PjBase>();
-            enemy.GetComponent<TakeDamage>().TakeDamage(this, CalculateStrength(h3Dmg), HitData.Element.fire, AttackType.Physical);
-            DamageDealed(this, enemy, CalculateStrength(h3Dmg), HitData.Element.water, HitData.AttackType.melee, HitData.HabType.basic);
+            enemy = enemyColl.GetComponent<PjBase>(); if (enemy.team != team)
+            {
+                enemy.GetComponent<TakeDamage>().TakeDamage(this, CalculateStrength(h3Dmg), HitData.Element.fire, AttackType.Physical);
+                DamageDealed(this, enemy, CalculateStrength(h3Dmg), HitData.Element.fire, HitData.AttackType.melee, HitData.HabType.hability);
+            }
         }
         currentHab3Cd = CDR(hab3Cd);
     }

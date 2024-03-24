@@ -25,6 +25,7 @@ public class PjBase : MonoBehaviour, TakeDamage
     public GameObject spinObjects;
     public Slider hpBar;
     public Slider stunnBar;
+    public Slider shieldBar;
     public Sprite hab1Image;
     public Sprite hab2Image;
     public Sprite hab3Image;
@@ -72,6 +73,10 @@ public class PjBase : MonoBehaviour, TakeDamage
         stats.hp = stats.mHp;
 
         GameManager.Instance.pjList.Add(this);
+        if (hpBar != null)
+        {
+            shieldBar = hpBar.transform.parent.GetChild(2).GetComponent<Slider>();
+        }
     }
     public virtual void Update()
     {
@@ -82,11 +87,14 @@ public class PjBase : MonoBehaviour, TakeDamage
             {
                 stats.hp = stats.mHp;
             }
-            if (hpBar != null)
-            {
-                hpBar.maxValue = stats.mHp;
-                hpBar.value = stats.hp;
-            }
+        }
+        if (hpBar != null)
+        {
+            hpBar.maxValue = stats.mHp;
+            hpBar.value = stats.hp;
+
+            shieldBar.value = stats.shield;
+            shieldBar.maxValue = stats.mHp * 1.5f;
         }
         if (hide)
         {
@@ -344,12 +352,12 @@ public class PjBase : MonoBehaviour, TakeDamage
         float originalValue = value;
         if (controller != null)
         {
-            while (Shield.shieldAmount > 0 && value > 0)
+            while (stats.shield > 0 && value > 0)
             {
                 Shield chosenShield = null;
                 foreach (Shield shield in controller.GetComponents<Shield>())
                 {
-                    if (chosenShield == null || shield.time < chosenShield.time && shield.singularShieldAmount > 0)
+                    if (chosenShield == null || shield.time < chosenShield.time && shield.shieldAmount > 0)
                     {
                         chosenShield = shield;
                     }
