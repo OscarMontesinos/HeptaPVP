@@ -197,6 +197,12 @@ public class IABase : MonoBehaviour
             if (unit != null)
             {
                 alliesHp += unit.stats.hp;
+            }
+        }
+        foreach (PjBase unit in team.allies)
+        {
+            if (unit != null)
+            {
                 alliesFullHp += unit.stats.mHp;
             }
         }
@@ -482,7 +488,7 @@ public class IABase : MonoBehaviour
 
     public virtual void PivotAroundObject(GameObject target)
     {
-        Vector3 point = new Vector3(Random.Range(-7, 7), Random.Range(-7, 7), transform.position.z);
+        Vector3 point = new Vector3(Random.Range(-4, 4), Random.Range(-4, 4), transform.position.z);
         point += target.transform.position;
 
         NavMeshHit hit;

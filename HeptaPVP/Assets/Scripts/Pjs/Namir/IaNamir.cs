@@ -247,7 +247,7 @@ public class IaNamir : IABase
             {
                 namir.MainAttack();
             }
-            if (GetRemainingDistance() < 1f)
+            if (GetRemainingDistance() < 1f || InRange(closestEnemy.gameObject, namir.h1Range1 * 3))
             {
                 if (InRange(closestEnemy.gameObject, namir.h1Range1 * 2))
                 {

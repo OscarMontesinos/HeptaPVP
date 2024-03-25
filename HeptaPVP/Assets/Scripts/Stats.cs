@@ -13,6 +13,7 @@ public class Stats
 
     public float sinergy;
     public float strength;
+    public float pot;
     public float atSpd;
     public float control;
     public float cdr;

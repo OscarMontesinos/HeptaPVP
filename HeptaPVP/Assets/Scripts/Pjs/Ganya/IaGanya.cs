@@ -87,16 +87,9 @@ public class IaGanya : IABase
         {
             ganya.MainAttack();
         }
-        else if (ganya.h1Charges > 1 && InRange(closestEnemy.gameObject, ganya.h1Range * 1.7f) && !ganya.IsSoftCasting())
+        else if (ganya.h1Charges > 1 && InRange(closestEnemy.gameObject, ganya.h1Range) && !ganya.IsSoftCasting() && IsPjAsolated(closestEnemy))
         {
-            if (InRange(closestEnemy.gameObject, ganya.h1Range))
-            {
-                StartCoroutine(DashAround(closestEnemy));
-            }
-            else
-            {
-                ganya.Hab1();
-            }
+            StartCoroutine(DashAround(closestEnemy));
         }
         else if (ganya.currentHab2Cd <= 0 && InRange(closestEnemy.gameObject, ganya.h2Area * 2))
         {
@@ -106,7 +99,7 @@ public class IaGanya : IABase
         {
             ganya.Hab3();
         }
-        else if (ganya.h1Charges > 0 && InRange(closestEnemy.gameObject, ganya.h1Range * 1.7f) && !ganya.IsSoftCasting())
+        else if (ganya.h1Charges > 0 && InRange(closestEnemy.gameObject, ganya.h1Range * 0.5f) && !ganya.IsSoftCasting())
         {
             StartCoroutine(DashBackwards(closestEnemy));
         }
@@ -116,19 +109,19 @@ public class IaGanya : IABase
         }
 
 
-        if (GetRemainingDistance() < 1f || !InRange(lowestEnemy.gameObject, ganya.aRange-1))
+        if (GetRemainingDistance() < 1f)
         {
-            if (InRange(closestEnemy.gameObject, ganya.aRange - 1))
+            if (InRange(closestEnemy.gameObject, ganya.aRange - 2))
             {
                 PivotBackwards();
             }
             else
             {
-                agent.SetDestination(closestEnemy.transform.position);
+                PivotForwards();
             }
+        }
 
 
-        } 
             StartCoroutine(RestartIA());
     }
 

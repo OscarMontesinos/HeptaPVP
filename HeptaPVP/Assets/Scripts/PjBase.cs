@@ -94,7 +94,7 @@ public class PjBase : MonoBehaviour, TakeDamage
             hpBar.value = stats.hp;
 
             shieldBar.value = stats.shield;
-            shieldBar.maxValue = stats.mHp * 1.5f;
+            shieldBar.maxValue = stats.mHp;
         }
         if (hide)
         {
@@ -500,7 +500,7 @@ public class PjBase : MonoBehaviour, TakeDamage
 
     public virtual float CalculateSinergy(float calculo)
     {
-        float value = stats.sinergy;
+        float value = stats.sinergy + stats.pot;
         value *= calculo / 100;
         //valor.text = value.ToString();
         return value;
@@ -509,7 +509,7 @@ public class PjBase : MonoBehaviour, TakeDamage
 
     public virtual float CalculateStrength(float calculo)
     {
-        float value = stats.strength;
+        float value = stats.strength + stats.pot;
         value *= calculo / 100;
         //valor.text = value.ToString();
         return value;
