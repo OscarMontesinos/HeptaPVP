@@ -39,6 +39,10 @@ PrefabInstance:
       propertyPath: team
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2301982300070907289, guid: 047d9ae8a9a4f8544832bb7a8d31e91e, type: 3}
+      propertyPath: hab3Cd
+      value: 55
+      objectReference: {fileID: 0}
     - target: {fileID: 3600292369412903002, guid: 047d9ae8a9a4f8544832bb7a8d31e91e, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -137,7 +141,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6379600470355968158, guid: 047d9ae8a9a4f8544832bb7a8d31e91e, type: 3}
       propertyPath: m_Name
-      value: Ganya (2)
+      value: GanyaBot
       objectReference: {fileID: 0}
     - target: {fileID: 6379600470355968158, guid: 047d9ae8a9a4f8544832bb7a8d31e91e, type: 3}
       propertyPath: m_IsActive
@@ -195,15 +199,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e4526f672f8c1b4e8d5a8c2b533e08c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  team: {fileID: 0}
   agent: {fileID: 0}
   character: {fileID: 0}
   enemiesOnSight: []
-  alliesOnSight: []
+  closeAllies: []
   lowestEnemy: {fileID: 0}
   closestEnemy: {fileID: 0}
-  minWeight: -80
-  maxWeight: 80
-  minHeight: -60
-  maxHeight: 180
+  lowestAlly: {fileID: 0}
+  closestAlly: {fileID: 0}
   characterToFollow: {fileID: 0}
   playstyle: 0

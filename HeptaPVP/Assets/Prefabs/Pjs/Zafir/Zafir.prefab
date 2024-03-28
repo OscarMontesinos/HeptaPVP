@@ -429,7 +429,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3837484798003312923}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.72, z: 0}
+  m_LocalPosition: {x: 0, y: 1.95, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -650,7 +650,7 @@ MonoBehaviour:
   hide: 0
   visuals: {fileID: 8947138123045533742}
   weapon: 0
-  showARanges: 0
+  showARanges: 1
   aDmg: 20
   aSpearPoint: {fileID: 8708404727031589226}
   aSpearWeight: 1.82
@@ -658,12 +658,12 @@ MonoBehaviour:
   aSpearHpPercentage: 2.5
   aSpearAtSpdMultiplier: 0.85
   aShieldPoint: {fileID: 3837484798003312923}
-  aShieldArea: 1.65
+  aShieldArea: 2
   aShieldResistancesBuff: 85
   aShieldAtSpdMultiplier: 0.7
   aGaunletPoint: {fileID: 8165245307701568101}
   aGaunletAtSpdMultiplier: 1.5
-  aGaunletArea: 1.8
+  aGaunletArea: 2.15
   aGaunletSpd: 2
   h1Spears: {fileID: 1193275972510266211, guid: bb2b47145bf58da4498bef73ead95a11, type: 3}
   showH1Ranges: 1
@@ -686,9 +686,9 @@ MonoBehaviour:
   h3Duration: 5
   h3Range: 20
   h3Dmg: 40
-  h3Heal: 50
+  h3Heal: 60
   h3PotAmount: 20
-  h3RegenPerSecond: 2
+  h3RegenPerSecond: 3
 --- !u!50 &6379600470355968154
 Rigidbody2D:
   serializedVersion: 4
@@ -917,7 +917,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8165245307701568101}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.84, z: 0}
+  m_LocalPosition: {x: 0, y: 2.05, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

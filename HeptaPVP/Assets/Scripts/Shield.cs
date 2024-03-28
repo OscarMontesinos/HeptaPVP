@@ -10,12 +10,17 @@ public class Shield : Buff
     {
         if (value >= -shieldAmount)
         {
+            if (value < 0)
+            {
+                user.RegisterDamage(-value);
+            }
             shieldAmount += value;
             target.stats.shield += value;
             value = 0;
         }
         else
         {
+            user.RegisterDamage(-value);
             value += shieldAmount;
             shieldAmount = 0;
             target.stats.shield += value;
@@ -31,6 +36,7 @@ public class Shield : Buff
 
     public override void Die()
     {
+        user.RegisterDamage(-shieldAmount);
         ChangeShieldAmount(-shieldAmount);
         base.Die();
     }

@@ -294,6 +294,7 @@ public class PjBase : MonoBehaviour, TakeDamage
 
     public virtual void TakeDmg(PjBase user, float value, HitData.Element element, AttackType type)
     {
+        user.RegisterDamage(value - stats.shield);
         float calculo = 0;
         DamageText dText = null;
         if (value + dmgCount > 1)
@@ -355,7 +356,7 @@ public class PjBase : MonoBehaviour, TakeDamage
             while (stats.shield > 0 && value > 0)
             {
                 Shield chosenShield = null;
-                foreach (Shield shield in controller.GetComponents<Shield>())
+                foreach (Shield shield in GetComponents<Shield>())
                 {
                     if (chosenShield == null || shield.time < chosenShield.time && shield.shieldAmount > 0)
                     {
@@ -406,8 +407,11 @@ public class PjBase : MonoBehaviour, TakeDamage
             stats.hp += value;
             if (stats.hp > stats.mHp)
             {
+                value -= (stats.hp - stats.mHp);
                 stats.hp = stats.mHp;
             }
+
+            user.RegisterDamage(value);
 
             if (value + healCount > 1)
             {
@@ -541,6 +545,12 @@ public class PjBase : MonoBehaviour, TakeDamage
     }
     public virtual IEnumerator Dash(Vector2 direction, float speed, float range, bool ignoreWalls)
     {
+        if (GetComponent<NavMeshAgent>())
+        {
+            GetComponent<NavMeshAgent>().enabled = false;
+        }
+
+
         GetComponent<Collider2D>().isTrigger = true;
 
         dashing = true;
@@ -574,6 +584,10 @@ public class PjBase : MonoBehaviour, TakeDamage
         rb.velocity = new Vector2(0, 0);
 
         GetComponent<Collider2D>().isTrigger = false;
+        if (GetComponent<NavMeshAgent>())
+        {
+            GetComponent<NavMeshAgent>().enabled = true;
+        }
     }
 
     public void AnimationCursorLock(int value)

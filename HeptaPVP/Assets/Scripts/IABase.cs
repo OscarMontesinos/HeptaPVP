@@ -210,7 +210,7 @@ public class IABase : MonoBehaviour
         enemiesHp *= 100 / enemiesFullHp;
         alliesHp *= 100 / alliesFullHp;
 
-        if (enemiesHp > 0)
+        if (enemiesHp > 0 && agent.enabled == true)
         {
             if (character.stats.hp <= character.stats.mHp * 0.3f)
             {
@@ -428,7 +428,14 @@ public class IABase : MonoBehaviour
     public virtual IEnumerator RestartIA()
     {
         yield return null;
-        IA();
+        if (agent.enabled == false)
+        {
+            StartCoroutine(RestartIA());
+        }
+        else
+        {
+            IA();
+        }
     }
 
     public virtual void PivotBackwards()

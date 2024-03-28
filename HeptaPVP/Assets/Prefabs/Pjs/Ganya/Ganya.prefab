@@ -5272,6 +5272,7 @@ MonoBehaviour:
   spinObjects: {fileID: 294524932057363568}
   hpBar: {fileID: 3217377618066464077}
   stunnBar: {fileID: 419719247428122164}
+  shieldBar: {fileID: 0}
   hab1Image: {fileID: 21300000, guid: a079cb5b85c28ed4a82ae4d9ec0cf789, type: 3}
   hab2Image: {fileID: 21300000, guid: 87c5ecfd8adb84b449f862b1de91d49b, type: 3}
   hab3Image: {fileID: 21300000, guid: 0303da94fd09ccc4f9fe31a9d17bbbf6, type: 3}
@@ -5294,6 +5295,7 @@ MonoBehaviour:
     shield: 0
     sinergy: 15
     strength: 45
+    pot: 0
     atSpd: 2.4
     control: 15
     cdr: 0
@@ -5329,7 +5331,7 @@ MonoBehaviour:
   h2Stunn: 0.7
   h2CastTime: 0.65
   h3Point: {fileID: 3837484798003312923}
-  h3Dmg: 47.5
+  h3Dmg: 37.5
   h3Weight: 2
   h3Height: 13
   h3CastTime: 0.35

@@ -149,6 +149,7 @@ public class Ganya : PjBase
             {
                 animator.Play("GanyaHability");
                 StartCoroutine(Cast(h3CastTime));
+                h3Precast = false;
             }
             else
             {

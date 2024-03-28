@@ -203,7 +203,7 @@ public class Zafir : PjBase
         if (!IsCasting() && !IsStunned() && !IsDashing() && currentHab1Cd <= 0)
         {
             currentHab1Cd = CDR(hab1Cd);
-            StartCoroutine(Cast(1));
+            StartCoroutine(SoftCast(1));
             animator.Play("SpearHability");
             ChangeWeapon(Weapon.spear);
         }
